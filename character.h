@@ -13,9 +13,9 @@ private:
     direction dir;
 
 public:
-    Character();
+    Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file);
 
-    virtual void update(); // virtual to be discussed
+//    virtual void update(); // virtual to be discussed
 
     bool checkStep(int x, int y); // checks if there is collision at x and y location
     void Move(); // moves speed pixels in the direction of dir (checks for obstackle collision if walkthrough is false using checkStep function)

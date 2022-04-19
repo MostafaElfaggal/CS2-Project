@@ -12,18 +12,28 @@ SOURCES += \
     bullet.cpp \
     character.cpp \
     enemy.cpp \
+    enemy1.cpp \
+    enemy2.cpp \
     game.cpp \
     gameobject.cpp \
+    grass.cpp \
     main.cpp \
-    player.cpp
+    player.cpp \
+    wall.cpp \
+    worldobject.cpp
 
 HEADERS += \
     bullet.h \
     character.h \
     enemy.h \
+    enemy1.h \
+    enemy2.h \
     game.h \
     gameobject.h \
-    player.h
+    grass.h \
+    player.h \
+    wall.h \
+    worldobject.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

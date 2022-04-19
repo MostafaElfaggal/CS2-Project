@@ -2,12 +2,14 @@
 #define GAME_H
 
 #include "gameobject.h"
+#include <QObject>
 
-class Game : public GameObject
+class Game : QObject
 {
 private:
     GameObject** objs;
     int objsSize;
+    int frame;
 
 public:
     Game(GameObject *items[], int n);

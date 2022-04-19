@@ -11,10 +11,9 @@ enum direction {
 
 class GameObject : public QObject, public QGraphicsPixmapItem
 {
-    Q_OBJECT
 public:
-    GameObject();
-    virtual void update() = 0;
+    GameObject(int x_pos, int y_pos, int size_w, int size_h, QString img_file);
+    virtual void update(int frame);
 };
 
 #endif // GAMEOBJECT_H

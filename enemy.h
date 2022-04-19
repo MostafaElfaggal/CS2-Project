@@ -6,7 +6,7 @@
 class Enemy : public Character
 {
 public:
-    Enemy();
+    Enemy(int x_pos, int y_pos, QString img_file);
 
 // random control (might be through update)
 };

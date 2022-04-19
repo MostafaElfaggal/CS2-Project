@@ -6,7 +6,7 @@
 class Player : public Character
 {
 public:
-    Player();
+    Player(int x_pos, int y_pos);
 
 // keyboard control slot (needs to integrate through update)
 };

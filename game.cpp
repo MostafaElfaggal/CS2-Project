@@ -4,6 +4,7 @@
 
 Game::Game(GameObject *items[], int n)
 {
+    frame = 0;
     objsSize = n;
     objs = new GameObject*[n];
     for(int i=0; i<n; i++) {
@@ -17,8 +18,10 @@ Game::Game(GameObject *items[], int n)
 }
 
 void Game::update() {
+    frame++;
+    frame %= 1000;
     for (int i=0; i<objsSize; i++) {
-        objs[i]->update();
+        objs[i]->update(frame);
     }
 }
 
