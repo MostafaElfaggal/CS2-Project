@@ -1,32 +1,27 @@
 #include "game.h"
 
+#include <QDebug>
+
 #include <QTimer>
 
-Game::Game(GameObject *items[], int n)
+Game::Game(QVector<GameObject*> *items)
 {
     frame = 0;
-    objsSize = n;
-    objs = new GameObject*[n];
-    for(int i=0; i<n; i++) {
-        objs[i] = items[i];
-    }
+    objs = items;
 
-    QTimer * timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this,SLOT(update()));
+    QTimer * timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(run()));
 
     timer->start(33);
 }
 
-void Game::update() {
+void Game::run() {
     frame++;
     frame %= 1000;
-    for (int i=0; i<objsSize; i++) {
-        objs[i]->update(frame);
+    for (int i=0; i<objs->size(); i++) {
+        (*objs)[i]->update(frame);
     }
+//    qDebug() << "running...";
 }
 
-Game::~Game() {
-    for (int i=0; i<objsSize; i++) {
-        delete objs[i];
-    }
-}
+Game::~Game() {}

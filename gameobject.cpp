@@ -9,6 +9,10 @@ GameObject::GameObject(int x_pos, int y_pos, int size_w, int size_h, QString img
     setPos(x_pos, y_pos);
 }
 
-void GameObject::update(int frame) {
+void GameObject::animate() {
+    setPixmap(animations[current_animations++]);
+    current_animations %= animations.size();
+}
 
+void GameObject::update(int frame) {
 }

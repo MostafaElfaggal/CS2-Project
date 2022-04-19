@@ -1,3 +1,4 @@
+#include <QVector>
 #include <QApplication>
 
 #include <QDir>
@@ -20,6 +21,7 @@
 
 int main(int argc, char *argv[])
 {
+    QVector<GameObject *> objs;
     QApplication a(argc, argv);
     QDir::setCurrent("D:/Projects/C++ Qt/CS2_Project");
 
@@ -47,14 +49,17 @@ int main(int argc, char *argv[])
                  background[i][j] = new Wall(50+50*j,50+50*i);
              else
                  background[i][j] = new Grass(50+50*j,50+50*i);
+             objs.push_back(background[i][j]);
              scene.addItem(background[i][j]);
             }
     Player p(100, 100);
+    objs.push_back(&p);
     scene.addItem(&p);
 
     view.setScene(&scene);
     view.setSceneRect(0, 0, 600, 600);
     view.show();
+    Game g(&objs);
 
 
 

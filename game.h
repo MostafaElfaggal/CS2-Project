@@ -1,20 +1,21 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <QVector>
 #include "gameobject.h"
 #include <QObject>
 
-class Game : QObject
+class Game : public QObject
 {
+    Q_OBJECT
 private:
-    GameObject** objs;
-    int objsSize;
+    QVector<GameObject*>* objs;
     int frame;
 
 public:
-    Game(GameObject *items[], int n);
+    Game(QVector<GameObject*>* items);
     ~Game();
 public slots:
-    void update();
+    void run();
 };
 #endif // GAME_H

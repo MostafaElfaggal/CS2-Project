@@ -19,8 +19,7 @@ SOURCES += \
     grass.cpp \
     main.cpp \
     player.cpp \
-    wall.cpp \
-    worldobject.cpp
+    wall.cpp
 
 HEADERS += \
     bullet.h \
@@ -32,8 +31,7 @@ HEADERS += \
     gameobject.h \
     grass.h \
     player.h \
-    wall.h \
-    worldobject.h
+    wall.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
