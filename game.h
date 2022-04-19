@@ -1,15 +1,17 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <QObject>
+#include "gameobject.h"
 
-class Game : public QObject
+class Game : public GameObject
 {
-    Q_OBJECT
+private:
+    GameObject** objs;
+    int objsSize;
 
 public:
-    Game();
-//    ~Game();
+    Game(GameObject *items[], int n);
+    ~Game();
 public slots:
     void update();
 };
