@@ -39,7 +39,9 @@ int main(int argc, char *argv[])
     int boarddata[10][10];
     QString temp;
     GameObject *background[10][10];
+
     for (int i=0;i<10;i++)
+    {
             for (int j=0;j<10;j++)
             {
              stream>>temp;
@@ -52,9 +54,16 @@ int main(int argc, char *argv[])
              objs.push_back(background[i][j]);
              scene.addItem(background[i][j]);
             }
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////// PLAYER
     Player p(100, 100);
     objs.push_back(&p);
     scene.addItem(&p);
+
+    p.setFlag(QGraphicsItem::ItemIsFocusable);
+    p.setFocus();
+/////////////////////////////////////////////////////////////////////////////////////////
 
     view.setScene(&scene);
     view.setSceneRect(0, 0, 600, 600);

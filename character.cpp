@@ -4,3 +4,8 @@ Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_f
 {
 
 }
+
+bool Character::checkStep(int x, int y)
+{
+
+}
