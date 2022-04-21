@@ -19,7 +19,8 @@ void Game::run() {
     frame++;
     frame %= 1000;
     for (int i=0; i<objs->size(); i++) {
-        (*objs)[i]->update(frame);
+        if ((*objs)[i] != NULL)
+            (*objs)[i]->update(frame);
     }
 
 //    qDebug() << "running...";

@@ -13,9 +13,9 @@ Wall::Wall(int x_pos, int y_pos) : GameObject(x_pos, y_pos, 50, 50, "Bricks.png"
 }
 
 void Wall::update(int frame) {
-    if (frame%30 == 0) {
-        animate(); // use the animate function every second which will auto scroll through the different animations
-    }
+//    if (frame%30 == 0) {
+//        animate(); // use the animate function every second which will auto scroll through the different animations
+//    }
 }
 
 Wall::~Wall() {

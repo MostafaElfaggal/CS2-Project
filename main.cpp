@@ -1,8 +1,6 @@
 #include <QVector>
 #include <QApplication>
 
-#include <QDir>
-
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
@@ -22,8 +20,9 @@
 int main(int argc, char *argv[])
 {
     QVector<GameObject *> objs;
+    objs.push_back(NULL);
+    objs.push_back(NULL);
     QApplication a(argc, argv);
-    QDir::setCurrent("D:/Projects/C++ Qt/CS2_Project");
 
     QGraphicsScene scene;
 
@@ -57,7 +56,7 @@ int main(int argc, char *argv[])
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////// PLAYER
-    Player p(100, 100);
+    Player p(100, 100, objs[0], objs[1]);
     objs.push_back(&p);
     scene.addItem(&p);
 
