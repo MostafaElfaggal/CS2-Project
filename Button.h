@@ -4,11 +4,15 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
 
-class Button: public QGraphicsRectItem {
+#include <QDebug>
+
+class Button: public QObject, public QGraphicsRectItem {
+    Q_OBJECT
 
 public:
     Button(QString name,QGraphicsItem * parent=NULL);
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 

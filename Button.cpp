@@ -15,3 +15,24 @@ Button::Button(QString name, QGraphicsItem *parent):QGraphicsRectItem(parent)
     text->setPos(xpos,ypos);
     setAcceptHoverEvents(true);
 }
+
+void Button::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "pressed";
+}
+
+void Button::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "released";
+    clicked();
+}
+
+void Button::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    qDebug() << "in";
+}
+
+void Button::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    qDebug() << "out";
+}

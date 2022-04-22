@@ -17,9 +17,9 @@ public:
 
     public slots:
 
-    void music();
-    void close();
     void start();
+    void close();
+    void music();
 };
 
 #endif // MAINMENU_H

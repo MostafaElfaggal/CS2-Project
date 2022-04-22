@@ -9,6 +9,8 @@
 #include <QFile>
 #include <QTextStream>
 
+#include "mainmenu.h"
+
 #include "gameobject.h"
 #include "game.h"
 
@@ -32,108 +34,81 @@ int main(int argc, char *argv[])
     view.setWindowTitle("Game");
     view.setBackgroundBrush(QBrush(Qt::black));
 
-    QFile file("Board.txt");
-    if (! file.open(QIODevice::ReadOnly))
-    {
-        qCritical() << "Could not open file:";
-        qCritical() << file.errorString();
-        return 1;
-    }
-    QTextStream stream(&file);
+//    QFile file("Board.txt");
+//    if (! file.open(QIODevice::ReadOnly))
+//    {
+//        qCritical() << "Could not open file:";
+//        qCritical() << file.errorString();
+//        return 1;
+//    }
+//    QTextStream stream(&file);
 
-    int boarddata[20][20];
-    QString temp;
-    int tmp;
-    GameObject *background[10][10];
-    int PX = 0, PY = 0;
-    QVector<GameObject*> enemys;
+//    int boarddata[20][20];
+//    QString temp;
+//    int tmp;
+//    GameObject *background[10][10];
+//    int PX = 0, PY = 0;
+//    QVector<GameObject*> enemys;
 
-    for (int i=0;i<10;i++)
-    {
-            for (int j=0;j<10;j++)
-            {
-             stream>>temp;
-             if (temp == "*"){
-                 boarddata[2*i][2*j]=0;
-                 boarddata[2*i+1][2*j]=0;
-                 boarddata[2*i][2*j+1]=0;
-                 boarddata[2*i+1][2*j+1]=0;
-                 PX = 50+50*j;
-                 PY = 50+50*i;
-             } else if (temp == "enemy") {
-                 boarddata[2*i][2*j]=0;
-                 boarddata[2*i+1][2*j]=0;
-                 boarddata[2*i][2*j+1]=0;
-                 boarddata[2*i+1][2*j+1]=0;
-                 GameObject* tmp = new Enemy1(50+50*j, 50+50*i);
-                 enemys.push_back(tmp);
-                 objs.push_back(tmp);
-             }else {
-                 tmp = temp.toInt();
-                 boarddata[2*i][2*j]=tmp;
-                 boarddata[2*i+1][2*j]=tmp;
-                 boarddata[2*i][2*j+1]=tmp;
-                 boarddata[2*i+1][2*j+1]=tmp;
-             }
+//    for (int i=0;i<10;i++)
+//    {
+//            for (int j=0;j<10;j++)
+//            {
+//             stream>>temp;
+//             if (temp == "*"){
+//                 boarddata[2*i][2*j]=0;
+//                 boarddata[2*i+1][2*j]=0;
+//                 boarddata[2*i][2*j+1]=0;
+//                 boarddata[2*i+1][2*j+1]=0;
+//                 PX = 50+50*j;
+//                 PY = 50+50*i;
+//             } else if (temp == "enemy") {
+//                 boarddata[2*i][2*j]=0;
+//                 boarddata[2*i+1][2*j]=0;
+//                 boarddata[2*i][2*j+1]=0;
+//                 boarddata[2*i+1][2*j+1]=0;
+//                 GameObject* tmp = new Enemy1(50+50*j, 50+50*i);
+//                 enemys.push_back(tmp);
+//                 objs.push_back(tmp);
+//             }else {
+//                 tmp = temp.toInt();
+//                 boarddata[2*i][2*j]=tmp;
+//                 boarddata[2*i+1][2*j]=tmp;
+//                 boarddata[2*i][2*j+1]=tmp;
+//                 boarddata[2*i+1][2*j+1]=tmp;
+//             }
 
-             if(boarddata[2*i][2*j]<0)
-                 background[i][j] = new Wall(50+50*j,50+50*i);
-             else
-                 background[i][j] = new Grass(50+50*j,50+50*i);
-             objs.push_back(background[i][j]);
-             scene.addItem(background[i][j]);
-            }
-    }
-    file.close();
+//             if(boarddata[2*i][2*j]<0)
+//                 background[i][j] = new Wall(50+50*j,50+50*i);
+//             else
+//                 background[i][j] = new Grass(50+50*j,50+50*i);
+//             objs.push_back(background[i][j]);
+//             scene.addItem(background[i][j]);
+//            }
+//    }
+//    file.close();
 
-///////////////////////////////////////////////////////////////////////////////////////// Enemys
-    for (int i=0; i<enemys.size(); i++) {
-        scene.addItem(enemys[i]);
-    }
-/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////// Enemys
+//    for (int i=0; i<enemys.size(); i++) {
+//        scene.addItem(enemys[i]);
+//    }
+///////////////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////////////// PLAYER
-    Player p(PX, PY);
-    objs.push_back(&p);
-    scene.addItem(&p);
+/////////////////////////////////////////////////////////////////////////////////////////// PLAYER
+//    Player p(PX, PY);
+//    objs.push_back(&p);
+//    scene.addItem(&p);
 
-    p.setFlag(QGraphicsItem::ItemIsFocusable);
-    p.setFocus();
-/////////////////////////////////////////////////////////////////////////////////////////
+//    p.setFlag(QGraphicsItem::ItemIsFocusable);
+//    p.setFocus();
+///////////////////////////////////////////////////////////////////////////////////////////
     view.setScene(&scene);
     view.setSceneRect(0, 0, 600, 600);
 
     Game g(&objs);
-
-        QGraphicsTextItem* titleText = new QGraphicsTextItem(QString("Game Name"));
-        QFont titleFont("Comic Sans",50);
-        titleText->setFont(titleFont);
-        int txPos = 300 - titleText->boundingRect().width()/2;
-        int tyPos = 150;
-        titleText->setPos(txPos,tyPos);
-
-        scene.addItem(titleText);
-
-        Button* playButton = new Button(QString("Start Game"));
-        int bxPos=300 - titleText->boundingRect().width()/2;
-        int byPos = 275;
-        playButton -> setPos(bxPos,byPos);
-        //connect(playButton,SIGNAL(Clicked()),this,SLOT(start()));
-        scene.addItem(playButton);
-
-        Button* quitButton = new Button(QString("Quit"));
-        int qxPos=300 - titleText->boundingRect().width()/2;
-        int qyPos=350;
-        quitButton -> setPos(qxPos,qyPos);
-        //connect(quitButton,SIGNAL(Clicked()),this,SLOT(close()));
-        scene.addItem(quitButton);
-
-        Button* musicButton = new Button(QString("Music"));
-        int mxPos=300 - titleText->boundingRect().width()/2;
-        int myPos=425;
-        musicButton -> setPos(mxPos,myPos);
-        //connect(musicButton,SIGNAL(Clicked()),this,SLOT(music()));
-        scene.addItem(musicButton);
+    MainMenu m;
+    scene.addItem(&m);
+    m.displaymenu();
 
     view.show();
 
