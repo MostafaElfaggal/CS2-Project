@@ -32,7 +32,12 @@ int main(int argc, char *argv[])
     view.setBackgroundBrush(QBrush(Qt::black));
 
     QFile file("Board.txt");
-    file.open(QIODevice::ReadOnly);
+    if (! file.open(QIODevice::ReadOnly))
+    {
+        qCritical() << "Could not open file:";
+        qCritical() << file.errorString();
+        return 1;
+    }
     QTextStream stream(&file);
 
     int boarddata[20][20];
@@ -78,6 +83,7 @@ int main(int argc, char *argv[])
              scene.addItem(background[i][j]);
             }
     }
+    file.close();
 
 ///////////////////////////////////////////////////////////////////////////////////////// Enemys
     for (int i=0; i<enemys.size(); i++) {
