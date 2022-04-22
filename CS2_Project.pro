@@ -9,6 +9,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Button.cpp \
     bullet.cpp \
     character.cpp \
     enemy.cpp \
@@ -18,10 +19,12 @@ SOURCES += \
     gameobject.cpp \
     grass.cpp \
     main.cpp \
+    mainmenu.cpp \
     player.cpp \
     wall.cpp
 
 HEADERS += \
+    Button.h \
     bullet.h \
     character.h \
     enemy.h \
@@ -30,6 +33,7 @@ HEADERS += \
     game.h \
     gameobject.h \
     grass.h \
+    mainmenu.h \
     player.h \
     wall.h
 
