@@ -19,6 +19,7 @@ SOURCES += \
     gameobject.cpp \
     grass.cpp \
     main.cpp \
+    mainmenu.cpp \
     player.cpp \
     wall.cpp
 
@@ -32,6 +33,7 @@ HEADERS += \
     game.h \
     gameobject.h \
     grass.h \
+    mainmenu.h \
     player.h \
     wall.h
 
