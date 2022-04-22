@@ -1,6 +1,6 @@
 #include "bullet.h"
 
-Bullet::Bullet(GameObject* &self, int x_pos, int y_pos, int p, direction d) : GameObject(x_pos, y_pos, 10, 10, "Bullet.png")
+Bullet::Bullet(GameObject* &self, int x_pos, int y_pos, int p, direction d) : GameObject(x_pos, y_pos-7.5, 25, 15, "Bullet.png")
 {
     speed = 10;
     power = p;
@@ -9,7 +9,6 @@ Bullet::Bullet(GameObject* &self, int x_pos, int y_pos, int p, direction d) : Ga
 
 void Bullet::Move()
 {
-    qDebug() << dir;
     switch(dir) {
     case 0:
         setPos(x(), y()-speed);

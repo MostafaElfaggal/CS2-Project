@@ -5,70 +5,42 @@
 
 #include <QDebug>
 
-Player::Player(int x_pos, int y_pos, GameObject* &B1, GameObject* &B2) : Character(x_pos, y_pos, 50, 50, "Tweety.png", 100, 10, 25, false, RIGHT)
+Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "Tweety.png", 100, 10, 25, false, RIGHT, 2)
 {
-    b1 = &B1;
-    b2 = &B2;
-    toMove = 0;
+    toMove = 4;
 }
 
 void Player::keyPressEvent(QKeyEvent *event)
 {
     if (event->key()==Qt::Key_Left)
     {
-        toMove = 4;
+        toMove = LEFT;
     }
     else if (event->key()==Qt::Key_Right)
     {
-        toMove = 3;
+        toMove = RIGHT;
     }
     else if (event->key()==Qt::Key_Up)
     {
-        toMove = 1;
+        toMove = UP;
     }
     else if (event->key()==Qt::Key_Down)
     {
-        toMove = 2;
+        toMove = DOWN;
     }
     else if (event->key()==Qt::Key_Space)
     {
-        if (*b1 == NULL)
-        {
-            *b1 = new Bullet(*b1, x()+25, y()+25, Power(), Dir());
-            scene()->addItem(*b1);
-        }
-        else if (*b2 == NULL)
-        {
-            *b2 = new Bullet(*b2, x()+25, y()+25, Power(), Dir());
-            scene()->addItem(*b2);
-        }
+        Shoot();
     }
 }
 
 void Player::update(int frame)
 {
     if (frame%3 == 0) { // collision check
-        switch(toMove)
-        {
-        case 0:
-            break;
-        case 1:
-            setPos(x(),y()-Speed());
-            setDir(UP);
-            break;
-        case 2:
-            setPos(x(),y()+Speed());
-            setDir(DOWN);
-            break;
-        case 3:
-            setPos(x()+Speed(),y());
-            setDir(RIGHT);
-            break;
-        case 4:
-            setPos(x()-Speed(),y());
-            setDir(LEFT);
-            break;
-        }
-        toMove = 0;
+        if (toMove != 4)
+            Move((direction)toMove);
+        toMove = 4;
     }
+
+    Character::update(frame);
 }

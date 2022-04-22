@@ -15,13 +15,13 @@
 #include "grass.h"
 #include "wall.h"
 #include "player.h"
-#include "enemy.h"
+#include "enemy1.h"
+#include "enemy2.h"
 
 int main(int argc, char *argv[])
 {
+    srand(time(0));
     QVector<GameObject *> objs;
-    objs.push_back(NULL);
-    objs.push_back(NULL);
     QApplication a(argc, argv);
 
     QGraphicsScene scene;
@@ -35,18 +35,42 @@ int main(int argc, char *argv[])
     file.open(QIODevice::ReadOnly);
     QTextStream stream(&file);
 
-    int boarddata[10][10];
+    int boarddata[20][20];
     QString temp;
+    int tmp;
     GameObject *background[10][10];
+    int PX = 0, PY = 0;
+    QVector<GameObject*> enemys;
 
     for (int i=0;i<10;i++)
     {
             for (int j=0;j<10;j++)
             {
              stream>>temp;
-             boarddata[i][j]=temp.toInt();
+             if (temp == "*"){
+                 boarddata[2*i][2*j]=0;
+                 boarddata[2*i+1][2*j]=0;
+                 boarddata[2*i][2*j+1]=0;
+                 boarddata[2*i+1][2*j+1]=0;
+                 PX = 50+50*j;
+                 PY = 50+50*i;
+             } else if (temp == "enemy") {
+                 boarddata[2*i][2*j]=0;
+                 boarddata[2*i+1][2*j]=0;
+                 boarddata[2*i][2*j+1]=0;
+                 boarddata[2*i+1][2*j+1]=0;
+                 GameObject* tmp = new Enemy1(50+50*j, 50+50*i);
+                 enemys.push_back(tmp);
+                 objs.push_back(tmp);
+             }else {
+                 tmp = temp.toInt();
+                 boarddata[2*i][2*j]=tmp;
+                 boarddata[2*i+1][2*j]=tmp;
+                 boarddata[2*i][2*j+1]=tmp;
+                 boarddata[2*i+1][2*j+1]=tmp;
+             }
 
-             if(boarddata[i][j]<0)
+             if(boarddata[2*i][2*j]<0)
                  background[i][j] = new Wall(50+50*j,50+50*i);
              else
                  background[i][j] = new Grass(50+50*j,50+50*i);
@@ -55,8 +79,14 @@ int main(int argc, char *argv[])
             }
     }
 
+///////////////////////////////////////////////////////////////////////////////////////// Enemys
+    for (int i=0; i<enemys.size(); i++) {
+        scene.addItem(enemys[i]);
+    }
+/////////////////////////////////////////////////////////////////////////////////////////
+
 ///////////////////////////////////////////////////////////////////////////////////////// PLAYER
-    Player p(100, 100, objs[0], objs[1]);
+    Player p(PX, PY);
     objs.push_back(&p);
     scene.addItem(&p);
 

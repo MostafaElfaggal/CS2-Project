@@ -7,6 +7,7 @@ class Enemy1 : public Enemy
 {
 public:
     Enemy1(int x_pos, int y_pos);
+    void update(int frame);
 };
 
 #endif // ENEMY1_H

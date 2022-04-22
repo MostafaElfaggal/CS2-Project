@@ -1,6 +1,6 @@
 #include "gameobject.h"
 
-GameObject::GameObject(int x_pos, int y_pos, int size_w, int size_h, QString img_file)
+GameObject::GameObject(float x_pos, float y_pos, int size_w, int size_h, QString img_file)
 {
     QPixmap img(img_file);
     img = img.scaledToWidth(size_w);

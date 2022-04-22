@@ -7,10 +7,9 @@
 class Player : public Character
 {
 private:
-    GameObject **b1, **b2;
     int toMove;
 public:
-    Player(int x_pos, int y_pos, GameObject* &B1, GameObject* &B2);
+    Player(int x_pos, int y_pos);
     void keyPressEvent(QKeyEvent *event);
     void update(int frame);
 
