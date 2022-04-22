@@ -10,8 +10,8 @@ GameObject::GameObject(float x_pos, float y_pos, int size_w, int size_h, QString
 }
 
 void GameObject::animate() {
-    setPixmap(animations[current_animations++]);
-    current_animations %= animations.size();
+    setPixmap(animations->at(current_animations++));
+    current_animations %= animations->size();
 }
 
 void GameObject::update(int frame) {

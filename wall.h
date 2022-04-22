@@ -5,6 +5,8 @@
 
 class Wall : public GameObject
 {
+private:
+    QVector<QPixmap> a1;
 public:
     Wall(int x_pos, int y_pos);
     void update(int frame);

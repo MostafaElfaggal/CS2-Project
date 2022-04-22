@@ -16,7 +16,7 @@ class GameObject : public QObject, public QGraphicsPixmapItem
 private:
     int current_animations = 0;
 public:
-    QVector<QPixmap> animations;
+    QVector<QPixmap>* animations;
     GameObject(float x_pos, float y_pos, int size_w, int size_h, QString img_file);
     void animate();
     virtual void update(int frame);

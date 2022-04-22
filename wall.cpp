@@ -3,13 +3,15 @@
 Wall::Wall(int x_pos, int y_pos) : GameObject(x_pos, y_pos, 50, 50, "Bricks.png")
 {
     // define animations
-    animations.push_back(QPixmap("Bricks.png"));
-    animations[0] = animations[0].scaledToHeight(50);
-    animations[0] = animations[0].scaledToWidth(50);
+    a1.push_back(QPixmap("Bricks.png"));
+    a1[0] = a1[0].scaledToHeight(50);
+    a1[0] = a1[0].scaledToWidth(50);
 
-    animations.push_back(QPixmap("Grass.png"));
-    animations[1] = animations[1].scaledToHeight(50);
-    animations[1] = animations[1].scaledToWidth(50);
+    a1.push_back(QPixmap("Grass.png"));
+    a1[1] = a1[1].scaledToHeight(50);
+    a1[1] = a1[1].scaledToWidth(50);
+
+    animations = &a1;
 }
 
 void Wall::update(int frame) {
