@@ -1,7 +1,8 @@
 #include "wall.h"
 
-Wall::Wall(int x_pos, int y_pos) : GameObject(x_pos, y_pos, 50, 50, "Bricks.png")
+Wall::Wall(int x_pos, int y_pos, int v) : GameObject(x_pos, y_pos, 50, 50, "Bricks.png")
 {
+    value = v;
     // define animations
     a1.push_back(QPixmap("Bricks.png"));
     a1[0] = a1[0].scaledToHeight(50);

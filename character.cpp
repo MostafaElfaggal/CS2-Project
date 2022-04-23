@@ -60,6 +60,7 @@ int Character::checkStep(direction d)
 
     float w = boundingRect().width(), h=boundingRect().height();
     Door* doorptr;
+    Wall* wallptr;
 
     int collision = 0;
     QGraphicsRectItem *Check;
@@ -83,8 +84,10 @@ int Character::checkStep(direction d)
     for (int i = 0, n = colliding_Check.size(); i < n; ++i)
     {
         if (typeid(*(colliding_Check[i])) == typeid(Wall))
-            collision = -1;
-        else if (typeid(*(colliding_Check[i])) == typeid(Door))
+        {
+            wallptr = qgraphicsitem_cast<Wall*>(colliding_Check[i]);
+            collision = wallptr->value;
+        } else if (typeid(*(colliding_Check[i])) == typeid(Door))
         {
             doorptr = qgraphicsitem_cast<Door*>(colliding_Check[i]);
             if (doorptr)
