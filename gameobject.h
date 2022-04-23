@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <QList>
 
 enum direction {
     UP, DOWN, RIGHT, LEFT

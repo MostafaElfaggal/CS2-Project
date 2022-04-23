@@ -40,10 +40,9 @@ int main(int argc, char *argv[])
     scene.addItem(&g);
     g.init();
 
-
-//    MainMenu m;
-//    scene.addItem(&m);
-//    m.displaymenu();
+    //    MainMenu m;
+    //    scene.addItem(&m);
+    //    m.displaymenu();
 
     view.show();
 
