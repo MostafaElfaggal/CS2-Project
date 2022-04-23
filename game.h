@@ -17,7 +17,7 @@ class Game : public QObject, public QGraphicsRectItem
 private:
     int currentRoom;
     QVector<GameObject*> rooms[3];
-    int PX[3], PY[3];
+    int PXstart[3], PYstart[3], PXend[3], PYend[3];
     GameObject* doors[3];
 
     Player p;

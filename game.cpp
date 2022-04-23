@@ -44,7 +44,7 @@ void Game::init()
 /////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////// PLAYER
-    p.setPos(PX[0], PY[0]);
+    p.setPos(PXstart[0], PYstart[0]);
 //    rooms[0].push_back(&p);
     scene()->addItem(&p);
 
@@ -78,14 +78,21 @@ void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
             for (int j=0;j<10;j++)
             {
              stream>>temp;
-             if (temp == "*"){
+             if (temp == "start"){
                  boarddata[2*i][2*j]=0;
                  boarddata[2*i+1][2*j]=0;
                  boarddata[2*i][2*j+1]=0;
                  boarddata[2*i+1][2*j+1]=0;
-                 PX[room-1] = offsetX+50*j;
-                 PY[room-1] = offsetY+50*i;
-             } else if (temp == "enemy") {
+                 PXstart[room-1] = offsetX+50*j;
+                 PYstart[room-1] = offsetY+50*i;
+             } else if (temp == "end") {
+                 boarddata[2*i][2*j]=0;
+                 boarddata[2*i+1][2*j]=0;
+                 boarddata[2*i][2*j+1]=0;
+                 boarddata[2*i+1][2*j+1]=0;
+                 PXend[room-1] = offsetX+50*j;
+                 PYend[room-1] = offsetY+50*i;
+             }else if (temp == "enemy") {
                  boarddata[2*i][2*j]=0;
                  boarddata[2*i+1][2*j]=0;
                  boarddata[2*i][2*j+1]=0;
@@ -136,16 +143,15 @@ void Game::run() {
             rooms[currentRoom][i]->update(frame);
     }
     p.update(frame);
-
-//    if (frame%150 == 0) {
-//        switchRoom(1);
-//    }
 }
 
 void Game::switchRoom(int newRoom)
 {
+    if (currentRoom < newRoom)
+        p.setPos(PXstart[newRoom], PYstart[newRoom]);
+    else
+        p.setPos(PXend[newRoom], PYend[newRoom]);
     currentRoom = newRoom;
-    p.setPos(PX[currentRoom], PY[currentRoom]);
     view->setSceneRect(600*currentRoom, 0, 600, 600);
 }
 
