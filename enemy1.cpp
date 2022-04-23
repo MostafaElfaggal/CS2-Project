@@ -17,7 +17,7 @@ void Enemy1::update(int frame) {
         }
             Move((direction)i);
             if (rand()%10 == 0) {
-                Shoot();
+                Shoot(false);
             }
     }
     Enemy::update(frame);

@@ -4,22 +4,9 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
-#include <QBrush>
-
-#include <QFile>
-#include <QTextStream>
-
 #include "mainmenu.h"
 
-#include "gameobject.h"
 #include "game.h"
-
-#include "grass.h"
-#include "wall.h"
-#include "player.h"
-#include "enemy1.h"
-#include "enemy2.h"
-#include "Button.h"
 
 int main(int argc, char *argv[])
 {

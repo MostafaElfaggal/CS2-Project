@@ -35,7 +35,7 @@ void Player::keyPressEvent(QKeyEvent *event)
     }
     else if (event->key() == Qt::Key_Space)
     {
-        Shoot();
+        Shoot(true);
         return;
     }
 

@@ -2,13 +2,17 @@
 
 #include "wall.h"
 #include "door.h"
+#include "character.h"
+#include "player.h"
 #include "enemy1.h"
 
-Bullet::Bullet(GameObject *&s, int x_pos, int y_pos, int p, direction d) : GameObject(x_pos, y_pos, 25, 15, "Bullet.png")
+Bullet::Bullet(GameObject *&s, int x_pos, int y_pos, int p, direction d, bool isPlayer) : GameObject(x_pos, y_pos, 25, 15, "Bullet.png")
 {
     speed = 10;
     power = p;
     dir = d;
+
+    byPlayer = isPlayer;
 
     float translation = boundingRect().height()/2;
     switch(d){
@@ -64,20 +68,27 @@ void Bullet::Move()
 bool Bullet::checkCollision()
 {
     QList<QGraphicsItem *> colliding_items = collidingItems();
+    Character* creature;
 
     for (int i = 0, n = colliding_items.size(); i < n; ++i)
     {
         if (typeid(*(colliding_items[i])) == typeid(Wall) || typeid(*(colliding_items[i])) == typeid(Door))
         {
             return true;
-        }
-        else if (typeid(*(colliding_items[i])) == typeid(Enemy1))
-        {
-            qDebug() << "hit";
-//            colliding_items[i]->decreaseHealth(power);
-//            scene()->removeItem(colliding_items[i]);
-//            delete colliding_items[i];
+        } else if (typeid(*(colliding_items[i])) == typeid(Enemy1)) {
+
+            creature = qgraphicsitem_cast<Character*>(colliding_items[i]);
+            if (creature && byPlayer)
+                    creature->decreaseHealth(power);
             return true;
+
+        } else if (typeid(*(colliding_items[i])) == typeid(Player)) {
+
+            creature = qgraphicsitem_cast<Character*>(colliding_items[i]);
+            if (creature && !byPlayer)
+                creature->decreaseHealth(power);
+            return true;
+
         }
     }
 

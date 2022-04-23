@@ -120,7 +120,7 @@ void Character::Move(direction d)
     }
 }
 
-void Character::Shoot()
+void Character::Shoot(bool isPlayer)
 {
     int i = 0;
     while (bullets[i] != NULL && i<MaxBullets)
@@ -130,16 +130,16 @@ void Character::Shoot()
         float w = boundingRect().width(), h=boundingRect().height();
         switch(dir){
         case UP:
-            bullets[i] = new Bullet(bullets[i], x()+w/2, y(), Power(), Dir());
+            bullets[i] = new Bullet(bullets[i], x()+w/2, y(), Power(), Dir(), isPlayer);
             break;
         case DOWN:
-            bullets[i] = new Bullet(bullets[i], x()+w/2, y()+h, Power(), Dir());
+            bullets[i] = new Bullet(bullets[i], x()+w/2, y()+h, Power(), Dir(), isPlayer);
             break;
         case RIGHT:
-            bullets[i] = new Bullet(bullets[i], x()+w, y()+h/2, Power(), Dir());
+            bullets[i] = new Bullet(bullets[i], x()+w, y()+h/2, Power(), Dir(), isPlayer);
             break;
         case LEFT:
-            bullets[i] = new Bullet(bullets[i], x(), y()+h/2, Power(), Dir());
+            bullets[i] = new Bullet(bullets[i], x(), y()+h/2, Power(), Dir(), isPlayer);
             break;
         }
         scene()->addItem(bullets[i]);

@@ -35,7 +35,7 @@ public:
     int checkStep(direction d); // checks if there is collision at x and y location
     void Move(direction d); // moves speed pixels in the direction of dir (checks for obstackle collision if walkthrough is false using checkStep function)
 
-    void Shoot(); // shoots a bullet in the direction of dir
+    void Shoot(bool isPlayer); // shoots a bullet in the direction of dir
     void increaseHealth(int h);
     void decreaseHealth(int h);
 };
