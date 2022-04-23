@@ -103,19 +103,15 @@ void Character::Move(direction d)
     {
     case UP:
         setPos(x(),y()-Speed());
-        setDir(UP);
         break;
     case DOWN:
         setPos(x(),y()+Speed());
-        setDir(DOWN);
         break;
     case RIGHT:
         setPos(x()+Speed(),y());
-        setDir(RIGHT);
         break;
     case LEFT:
         setPos(x()-Speed(),y());
-        setDir(LEFT);
         break;
     }
 }

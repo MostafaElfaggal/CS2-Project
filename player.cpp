@@ -17,21 +17,25 @@ void Player::keyPressEvent(QKeyEvent *event)
     {
         check = checkStep(UP);
         toMove = UP;
+        setDir((direction)toMove);
     }
     else if (event->key() == Qt::Key_Down)
     {
         check = checkStep(DOWN);
         toMove = DOWN;
+        setDir((direction)toMove);
     }
     else if (event->key() == Qt::Key_Right)
     {
         check = checkStep(RIGHT);
         toMove = RIGHT;
+        setDir((direction)toMove);
     }
     else if (event->key() == Qt::Key_Left)
     {
         check = checkStep(LEFT);
         toMove = LEFT;
+        setDir((direction)toMove);
     }
     else if (event->key() == Qt::Key_Space)
     {
