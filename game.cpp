@@ -92,12 +92,20 @@ void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
                  boarddata[2*i+1][2*j+1]=0;
                  PXend[room-1] = offsetX+50*j;
                  PYend[room-1] = offsetY+50*i;
-             }else if (temp == "enemy") {
+             } else if (temp == "enemy1") {
                  boarddata[2*i][2*j]=0;
                  boarddata[2*i+1][2*j]=0;
                  boarddata[2*i][2*j+1]=0;
                  boarddata[2*i+1][2*j+1]=0;
                  GameObject* tmp = new Enemy1(offsetX+50*j, offsetY+50*i);
+                 enemys.push_back(tmp);
+                 rooms[room-1].push_back(tmp);
+             } else if (temp == "enemy2") {
+                 boarddata[2*i][2*j]=0;
+                 boarddata[2*i+1][2*j]=0;
+                 boarddata[2*i][2*j+1]=0;
+                 boarddata[2*i+1][2*j+1]=0;
+                 GameObject* tmp = new Enemy2(offsetX+50*j, offsetY+50*i);
                  enemys.push_back(tmp);
                  rooms[room-1].push_back(tmp);
              } else if(temp == "door1" || temp == "door2" || temp == "door3") {
@@ -125,7 +133,7 @@ void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
                  doors[room-1] = background;
              }
              else if(boarddata[2*i][2*j]<0)
-                 background = new Wall(offsetX+50*j,offsetY+50*i);
+                 background = new Wall(offsetX+50*j,offsetY+50*i, boarddata[2*i][2*j]);
              else
                  background = new Grass(offsetX+50*j,offsetY+50*i);
              rooms[room-1].push_back(background);
