@@ -1,12 +1,12 @@
 #include "player.h"
 
 #include "bullet.h"
-#include <QGraphicsScene>
 
 #include <QDebug>
 
 Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "Tweety.png", 100, 10, 25, false, RIGHT, 2)
 {
+    setFlag(QGraphicsItem::ItemIsFocusable);
     toMove = 4;
 }
 

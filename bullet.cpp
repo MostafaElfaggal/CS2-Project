@@ -23,6 +23,7 @@ void Bullet::Move()
         setPos(x()-speed, y());
         break;
     }
+//    if (!scene()->sceneRect().contains(boundingRect())) scene()->removeItem(this);
     // collision
 }
 

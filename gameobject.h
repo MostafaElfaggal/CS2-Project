@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QObject>
+#include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 
 enum direction {
