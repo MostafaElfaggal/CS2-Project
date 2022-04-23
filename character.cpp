@@ -54,13 +54,14 @@ void Character::setDir(direction d)
     dir = d;
 }
 
-bool Character::checkStep(direction d)
+int Character::checkStep(direction d)
 {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////// Collison
 
     float w = boundingRect().width(), h=boundingRect().height();
+    Door* doorptr;
 
-    bool collision = false;
+    int collision = 0;
     QGraphicsRectItem *Check;
     switch(d){
     case UP:
@@ -82,8 +83,12 @@ bool Character::checkStep(direction d)
     for (int i = 0, n = colliding_Check.size(); i < n; ++i)
     {
         if (typeid(*(colliding_Check[i])) == typeid(Wall))
+            collision = -1;
+        else if (typeid(*(colliding_Check[i])) == typeid(Door))
         {
-            collision = true;
+            doorptr = qgraphicsitem_cast<Door*>(colliding_Check[i]);
+            if (doorptr)
+                collision = doorptr->to + 1; // room number from 1 to 3
         }
     }
     scene()->removeItem(Check);

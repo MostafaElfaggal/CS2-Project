@@ -1,6 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
+#include <QObject>
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
 
@@ -19,16 +20,8 @@ public:
 signals:
     void clicked();
 
-
-
-
 private:
       QString text;
-
-
-
-
-
 };
 
 #endif // BUTTON_H

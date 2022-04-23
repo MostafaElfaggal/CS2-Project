@@ -6,17 +6,16 @@
 
 class Player : public Character
 {
+    Q_OBJECT
 private:
     int toMove;
-    bool collision = false;
-    bool collisionUp = false;
-    bool collisionDown = false;
-    bool collisionRight = false;
-    bool collisionLeft = false;
 public:
     Player(int x_pos, int y_pos);
     void keyPressEvent(QKeyEvent *event);
     void update(int frame);
+
+signals:
+    void callSwitchView(int);
 
 // keyboard control slot (needs to integrate through update)
 };

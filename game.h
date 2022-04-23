@@ -5,6 +5,7 @@
 #include "gameobject.h"
 #include <QObject>
 #include <QGraphicsRectItem>
+#include <QGraphicsView>
 
 #include "player.h"
 
@@ -14,18 +15,26 @@ class Game : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 private:
-    QVector<GameObject*> rooms[3];
-    QVector<GameObject*>* objs;
     int currentRoom;
+    QVector<GameObject*> rooms[3];
+    int PX[3], PY[3];
+    GameObject* doors[3];
+
+    Player p;
+    QVector<GameObject*> enemys;
+
     int frame;
     QTimer* timer;
-    Player p;
+
+    QGraphicsView* view;
 
 public:
-    Game();
+    Game(QGraphicsView* v);
     void init();
+    void loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY);
     ~Game();
 public slots:
     void run();
+    void switchRoom(int newRoom);
 };
 #endif // GAME_H

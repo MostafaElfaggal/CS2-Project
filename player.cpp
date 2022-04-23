@@ -1,9 +1,6 @@
 #include "player.h"
-#include <wall.h>
+#include "wall.h"
 #include "bullet.h"
-#include <QGraphicsScene>
-#include <QList>
-#include <QGraphicsRectItem>
 
 #include <QDebug>
 
@@ -15,25 +12,39 @@ Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "Tweety.p
 
 void Player::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Left && !checkStep(LEFT))
+    int check = -1;
+    if (event->key() == Qt::Key_Up)
     {
-        toMove = LEFT;
-    }
-    else if (event->key() == Qt::Key_Right && !checkStep(RIGHT))
-    {
-        toMove = RIGHT;
-    }
-    else if (event->key() == Qt::Key_Up && !checkStep(UP))
-    {
+        check = checkStep(UP);
         toMove = UP;
     }
-    else if (event->key() == Qt::Key_Down && !checkStep(DOWN))
+    else if (event->key() == Qt::Key_Down)
     {
+        check = checkStep(DOWN);
         toMove = DOWN;
+    }
+    else if (event->key() == Qt::Key_Right)
+    {
+        check = checkStep(RIGHT);
+        toMove = RIGHT;
+    }
+    else if (event->key() == Qt::Key_Left)
+    {
+        check = checkStep(LEFT);
+        toMove = LEFT;
     }
     else if (event->key() == Qt::Key_Space)
     {
         Shoot();
+        return;
+    }
+
+    if (check < 0)
+        toMove = 4;
+    else if (check > 0)
+    {
+        toMove = 4;
+        callSwitchView(check-1);
     }
 }
 

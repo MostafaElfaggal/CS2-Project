@@ -1,8 +1,8 @@
 #include "bullet.h"
-#include <QList>
-#include <QGraphicsScene>
-#include <wall.h>
-#include <enemy1.h>
+
+#include "wall.h"
+#include "door.h"
+#include "enemy1.h"
 
 Bullet::Bullet(GameObject *&s, int x_pos, int y_pos, int p, direction d) : GameObject(x_pos, y_pos, 25, 15, "Bullet.png")
 {
@@ -67,7 +67,7 @@ bool Bullet::checkCollision()
 
     for (int i = 0, n = colliding_items.size(); i < n; ++i)
     {
-        if (typeid(*(colliding_items[i])) == typeid(Wall))
+        if (typeid(*(colliding_items[i])) == typeid(Wall) || typeid(*(colliding_items[i])) == typeid(Door))
         {
             return true;
         }

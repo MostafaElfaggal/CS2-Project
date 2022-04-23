@@ -24,7 +24,7 @@ void Button::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Button::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "released";
-    clicked();
+    Button::clicked();
 }
 
 void Button::hoverEnterEvent(QGraphicsSceneHoverEvent *event)

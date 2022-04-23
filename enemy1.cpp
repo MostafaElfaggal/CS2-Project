@@ -10,7 +10,7 @@ void Enemy1::update(int frame) {
     {
         int i = rand()%4;
 
-        while(checkStep((direction)i))
+        while(checkStep((direction)i) != 0)
         {
             i++;
             i%=4;

@@ -1,7 +1,6 @@
 #ifndef GRASS_H
 #define GRASS_H
 
-
 #include "gameobject.h"
 
 class Grass : public GameObject
