@@ -4,11 +4,32 @@
 #include <wall.h>
 #include <enemy1.h>
 
-Bullet::Bullet(GameObject *&self, int x_pos, int y_pos, int p, direction d) : GameObject(x_pos, y_pos - 7.5, 100, 40, "Bullet.png")
+Bullet::Bullet(GameObject *&s, int x_pos, int y_pos, int p, direction d) : GameObject(x_pos, y_pos, 25, 15, "Bullet.png")
 {
     speed = 10;
     power = p;
     dir = d;
+
+    float translation = boundingRect().height()/2;
+    switch(d){
+    case UP:
+        setRotation(270);
+        setPos(x()-translation, y());
+        break;
+    case DOWN:
+        setRotation(90);
+        setPos(x()+translation, y());
+        break;
+    case RIGHT:
+        setPos(x(), y()-translation);
+        break;
+    case LEFT:
+        setRotation(180);
+        setPos(x(), y()+translation);
+        break;
+    }
+
+    self = &s;
 }
 
 void Bullet::Move()
@@ -33,8 +54,10 @@ void Bullet::Move()
 
     if (checkCollision() == true) // collision
     {
-        scene()->removeItem(this); // Bullet still in heap
-        qDebug() << "Bullet collided";
+        scene()->removeItem(this);
+
+        delete *self;
+        *self = NULL;
     }
 }
 
@@ -50,8 +73,10 @@ bool Bullet::checkCollision()
         }
         else if (typeid(*(colliding_items[i])) == typeid(Enemy1))
         {
-            scene()->removeItem(colliding_items[i]);
-            delete colliding_items[i];
+            qDebug() << "hit";
+//            colliding_items[i]->decreaseHealth(power);
+//            scene()->removeItem(colliding_items[i]);
+//            delete colliding_items[i];
             return true;
         }
     }

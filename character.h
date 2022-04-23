@@ -4,6 +4,9 @@
 #include "gameobject.h"
 #include "bullet.h"
 
+#include "wall.h"
+#include "grass.h"
+
 class Character : public GameObject
 {
 private:
@@ -28,7 +31,7 @@ public:
     direction Dir();
     void setDir(direction d);
 
-    bool checkStep(int x, int y); // checks if there is collision at x and y location
+    bool checkStep(direction d); // checks if there is collision at x and y location
     void Move(direction d); // moves speed pixels in the direction of dir (checks for obstackle collision if walkthrough is false using checkStep function)
 
     void Shoot(); // shoots a bullet in the direction of dir
