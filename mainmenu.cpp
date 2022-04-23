@@ -2,6 +2,8 @@
 
 #include <QDebug>
 
+#include <QApplication>
+
 MainMenu::MainMenu() : QGraphicsRectItem(QRect(50,50,500,500))
 {
     setBrush(QBrush(Qt::blue));
@@ -49,6 +51,7 @@ void MainMenu::start()
 
 void MainMenu::close()
 {
+     QApplication::quit();
     qDebug() << "closing";
 }
 

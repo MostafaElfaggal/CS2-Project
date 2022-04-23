@@ -5,10 +5,24 @@
 Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets) : GameObject(x_pos, y_pos, size_w, size_h, img_file), MaxBullets(maxBullets)
 {
     health = Health;
+    Maxhealth = Health;
     power = Power;
     speed = Speed;
     walkthrough = Walkthrough;
     dir = Dir;
+
+    QBrush greenbrush(Qt::green);
+    QBrush blackbrush(Qt::black);
+    QRect inner(x()+1,y()-15,GetHealth(),5);
+    QRect outter(x(),y()-16,size_w,7);
+    Health_bar.setBrush(greenbrush);
+    Border_Health_bar.setBrush(blackbrush);
+    Health_bar.setRect(inner);
+    Border_Health_bar.setRect(outter);
+
+    scene()->addItem(&Health_bar);
+    scene()->addItem(&Border_Health_bar);
+
 
     bullets = new GameObject* [MaxBullets];
     for (int i=0; i<MaxBullets; i++) {
@@ -22,11 +36,52 @@ void Character::update(int frame)
         if (bullets[i] != NULL)
             bullets[i]->update(frame);
     }
+    Health_bar.setPos(x()+1,y()-15);
+    Border_Health_bar.setPos(x(),y()-16);
 }
 
 int Character::Health()
 {
     return health;
+}
+
+int Character::GetHealth()
+{
+      return (health/(Maxhealth*1.0))*(boundingRect().width()-2);
+//    health=100;
+//    QBrush greenbrush(Qt::green);
+//    QPen blackpen(Qt::black);
+//    QGraphicsRectItem *green_bar;
+//    QGraphicsRectItem *black_bar;
+//    float w = boundingRect().width(), h=boundingRect().height();
+//    switch(d){
+//            case UP:
+//                green_bar = new QGraphicsRectItem(x() + w/4, y() - 5, w/2, 5);
+//                black_bar = new QGraphicsRectItem(x() + w/4, y() - 5, 50, 25);
+//                break;
+//            case DOWN:
+//                green_bar = new QGraphicsRectItem(x() + w/4, y() + h, w/2, 5);
+//                black_bar = new QGraphicsRectItem(x() - 5, y() + h/4, 50, 25);
+//                break;
+//            case RIGHT:
+//                green_bar = new QGraphicsRectItem(x() + w, y() + h/4, 5, h/2);
+//                black_bar = new QGraphicsRectItem(x() - 5, y() + h/4, 50, 25);
+//                break;
+//            case LEFT:
+//                green_bar = new QGraphicsRectItem(x() - 5, y() + h/4, 5, h/2);
+//                black_bar = new QGraphicsRectItem(x() - 5, y() + h/4, 50, 25);
+//                break;
+//            }
+//     scene()->addItem(green_bar);
+//     scene()->addItem(black_bar);
+
+
+
+
+
+//    delete green_bar;
+//    delete black_bar;
+//    return health;
 }
 
 int Character::Power()
@@ -63,6 +118,7 @@ int Character::checkStep(direction d)
 
     int collision = 0;
     QGraphicsRectItem *Check;
+
     switch(d){
     case UP:
         Check = new QGraphicsRectItem(x() + w/4, y() - 5, w/2, 5);

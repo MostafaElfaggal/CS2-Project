@@ -12,10 +12,14 @@ class Character : public GameObject
 {
 private:
     int health;
+    int Maxhealth;
     int power;
     int speed;
     bool walkthrough;
     direction dir;
+
+    QGraphicsRectItem Health_bar;
+    QGraphicsRectItem Border_Health_bar;
 
     const int MaxBullets;
     GameObject **bullets;
@@ -26,6 +30,7 @@ public:
     virtual void update(int frame); // virtual to be discussed
 
     int Health();
+    int GetHealth();
     int Power();
     int Speed();
     bool Walkthrough();
