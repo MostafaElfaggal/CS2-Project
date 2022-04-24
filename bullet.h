@@ -7,6 +7,8 @@
 class Bullet : public GameObject
 {
 private:
+    QVector<QPixmap> a1;
+
     int speed;
     int power;
     direction dir;

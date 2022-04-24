@@ -7,8 +7,18 @@
 #include "enemy1.h"
 #include "enemy2.h"
 
-Bullet::Bullet(GameObject *&s, int x_pos, int y_pos, int p, direction d, bool isPlayer) : GameObject(x_pos, y_pos, 25, 15, "Bullet.png")
+Bullet::Bullet(GameObject *&s, int x_pos, int y_pos, int p, direction d, bool isPlayer) : GameObject(x_pos, y_pos, 25, 25, "fireBall1.png")
 {
+    // define animations
+    for (int i=0; i<4; i++)
+    {
+        a1.push_back(QPixmap("fireBall" + QString::number(i+1) + ".png"));
+        a1[i] = a1[i].scaledToHeight(25);
+        a1[i] = a1[i].scaledToWidth(25);
+    }
+
+    animations = &a1;
+
     speed = 10;
     power = p;
     dir = d;
@@ -101,6 +111,10 @@ bool Bullet::checkCollision()
 
 void Bullet::update(int frame)
 {
+    if (frame%2 == 0) {
+        animate(); // use the animate function every second which will auto scroll through the different animations
+    }
+
     Move();
 }
 
