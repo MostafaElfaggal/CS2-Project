@@ -13,18 +13,20 @@
 
 #include <QTimer>
 
+const int ROOM_COUNT = 4;
+
 class Game : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 private:
     int currentRoom;
-    QVector<GameObject*> rooms[3];
-    int PXstart[3], PYstart[3], PXend[3], PYend[3];
-    Door* doors[3][3];
+    QVector<GameObject*> rooms[ROOM_COUNT];
+    int PXstart[ROOM_COUNT], PYstart[ROOM_COUNT], PXend[ROOM_COUNT], PYend[ROOM_COUNT];
+    Door* doors[ROOM_COUNT][ROOM_COUNT];
 
     Player p;
-    QVector<Enemy*> enemys[3];
-    int enemysPerRoom[3];
+    QVector<Enemy*> enemys[ROOM_COUNT];
+    int enemysPerRoom[ROOM_COUNT];
 
     int frame;
     QTimer* timer;

@@ -184,5 +184,4 @@ void Character::decreaseHealth(int h)
     health -= h;
     if (health <= 0)
         delete this;
-    qDebug() << "decreased health by " << h;
 }

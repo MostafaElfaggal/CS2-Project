@@ -29,17 +29,18 @@ Game::Game(QGraphicsView* v) : QGraphicsRectItem(QRect(0,0,1,1)), p(0, 0)
 
 void Game::init()
 {
-    int boarddata[3][20][20];
+    int boarddata[ROOM_COUNT][20][20];
+
     enemysPerRoom[0] = 0;
     enemysPerRoom[1] = 0;
     enemysPerRoom[2] = 0;
+    enemysPerRoom[3] = 0;
 
-    loadRoom(1, boarddata[0], 50, 50);
-    loadRoom(2, boarddata[0], 650, 50);
-    loadRoom(3, boarddata[0], 1250, 50);
+    for (int i=1; i<=ROOM_COUNT; i++)
+        loadRoom(i, boarddata[i-1], 50+600*(i-1), 50);
 
 ///////////////////////////////////////////////////////////////////////////////////////// Enemys
-    for (int _=0; _<3; _++)
+    for (int _=0; _<ROOM_COUNT; _++)
         for (int i=0; i<enemys[_].size(); i++) {
             scene()->addItem(enemys[_][i]);
             enemys[_][i]->init();
@@ -114,7 +115,7 @@ void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
                  enemys[room-1].push_back(tmp);
                  tmp->setPtrs(&enemys[room-1].last());
                  enemysPerRoom[room-1]++;
-             } else if(temp == "door1" || temp == "door2" || temp == "door3") {
+             } else if(temp == "door1" || temp == "door2" || temp == "door3" || temp == "door4") {
                  boarddata[2*i][2*j]=-3;
                  boarddata[2*i+1][2*j]=-3;
                  boarddata[2*i][2*j+1]=-3;
@@ -125,6 +126,8 @@ void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
                      to = 1;
                  else if (temp == "door3")
                      to = 2;
+                 else if (temp == "door4")
+                     to = 3;
              } else {
                  tmp = temp.toInt();
                  boarddata[2*i][2*j]=tmp;

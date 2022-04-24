@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     view.setBackgroundBrush(QBrush(Qt::black));
 
     view.setScene(&scene);
-    view.setSceneRect(0, 0, 1800, 600);
+    view.setSceneRect(0, 0, 2400, 600);
 
     Game g(&view);
     scene.addItem(&g);
