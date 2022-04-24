@@ -14,6 +14,8 @@ Bullet::Bullet(GameObject *&s, int x_pos, int y_pos, int p, direction d, bool is
     dir = d;
 
     byPlayer = isPlayer;
+    inCollision = false;
+    isShooterAlive = true;
 
     float translation = boundingRect().height()/2;
     switch(d){
@@ -59,8 +61,6 @@ void Bullet::Move()
 
     if (checkCollision() == true) // collision
     {
-        scene()->removeItem(this);
-
         delete this;
 
     }
@@ -75,16 +75,19 @@ bool Bullet::checkCollision()
     {
         if (typeid(*(colliding_items[i])) == typeid(Wall) || typeid(*(colliding_items[i])) == typeid(Door))
         {
+            inCollision = true;
             return true;
-        } else if (typeid(*(colliding_items[i])) == typeid(Enemy1) || typeid(*(colliding_items[i])) == typeid(Enemy2)) {
-
+        } else if (typeid(*(colliding_items[i])) == typeid(Enemy1) || typeid(*(colliding_items[i])) == typeid(Enemy2))
+        {
+            inCollision = true;
             creature = qgraphicsitem_cast<Character*>(colliding_items[i]);
             if (creature && byPlayer)
                     creature->decreaseHealth(power);
             return true;
 
-        } else if (typeid(*(colliding_items[i])) == typeid(Player)) {
-
+        } else if (typeid(*(colliding_items[i])) == typeid(Player))
+        {
+            inCollision = true;
             creature = qgraphicsitem_cast<Character*>(colliding_items[i]);
             if (creature && !byPlayer)
                 creature->decreaseHealth(power);
@@ -103,5 +106,7 @@ void Bullet::update(int frame)
 
 Bullet::~Bullet()
 {
-    *self = NULL;
+    scene()->removeItem(this);
+    if (isShooterAlive)
+        *self = NULL;
 }

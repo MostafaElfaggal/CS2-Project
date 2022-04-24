@@ -5,18 +5,16 @@
 
 class Enemy : public Character
 {
-    Q_OBJECT
 private:
-    Enemy** self;
+    QVector<Enemy*>* self;
+    int id;
 public:
     Enemy(int x_pos, int y_pos, QString img_file);
     virtual void update(int frame);
 
-    void setPtrs(Enemy** s);
+    void setPtrs(QVector<Enemy*>* s, int i);
 
     ~Enemy();
-signals:
-    void die();
 
 // random control (might be through update)
 };

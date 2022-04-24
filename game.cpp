@@ -16,15 +16,16 @@
 #include "enemy2.h"
 #include "Button.h"
 
-Game::Game(QGraphicsView* v) : QGraphicsRectItem(QRect(0,0,1,1)), p(0, 0)
+Game::Game(QGraphicsView* v) : QGraphicsRectItem(QRect(0,0,1,1))
 {
+    p = new Player(0, 0);
     view = v;
 
     frame = 0;
 
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(run()));
-    connect(&p,SIGNAL(callSwitchView(int)),this,SLOT(switchRoom(int)));
+    connect(p,SIGNAL(callSwitchView(int)),this,SLOT(switchRoom(int)));
 }
 
 void Game::init()
@@ -49,17 +50,17 @@ void Game::init()
 /////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////// PLAYER
-    p.setPos(PXstart[0], PYstart[0]);
-    scene()->addItem(&p);
-    p.init();
-
-    p.setFocus();
+    p->setPos(PXstart[0], PYstart[0]);
+    scene()->addItem(p);
+    p->init();
+    connect(p,SIGNAL(die()),this,SLOT(Lose()));
 /////////////////////////////////////////////////////////////////////////////////////////
+
+    scene()->addItem(&status);
+    status.init();
 
     currentRoom = 0;
     running = false;
-
-    timer->start(33);
 }
 
 void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
@@ -105,7 +106,7 @@ void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
                  boarddata[2*i+1][2*j+1]=0;
                  Enemy* tmp = new Enemy1(offsetX+50*j, offsetY+50*i);
                  enemys[room-1].push_back(tmp);
-                 tmp->setPtrs(&enemys[room-1].last());
+                 tmp->setPtrs(&enemys[room-1], enemys[room-1].size()-1);
                  enemysPerRoom[room-1]++;
              } else if (temp == "enemy2") {
                  boarddata[2*i][2*j]=0;
@@ -114,7 +115,7 @@ void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
                  boarddata[2*i+1][2*j+1]=0;
                  Enemy* tmp = new Enemy2(offsetX+50*j, offsetY+50*i);
                  enemys[room-1].push_back(tmp);
-                 tmp->setPtrs(&enemys[room-1].last());
+                 tmp->setPtrs(&enemys[room-1], enemys[room-1].size()-1);
                  enemysPerRoom[room-1]++;
              } else if(temp == "door1" || temp == "door2" || temp == "door3" || temp == "door4") {
                  boarddata[2*i][2*j]=-3;
@@ -156,21 +157,76 @@ void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
     file.close();
 }
 
+void Game::start()
+{
+    view->setSceneRect(0, 0, 600, 600);
+    resume();
+}
+
+
 void Game::run() {
     if (!running)
         return;
 
     frame++;
     frame %= 1000;
-    for (int i=0; i<rooms[currentRoom].size(); i++) {
+    for (int i=0; i<rooms[currentRoom].size() && running; i++) {
         if (rooms[currentRoom][i] != NULL)
             rooms[currentRoom][i]->update(frame);
     }
-    for (int i=0; i<enemys[currentRoom].size(); i++) {
+    for (int i=0; i<enemys[currentRoom].size() && running; i++) {
         if (enemys[currentRoom][i] != NULL)
             enemys[currentRoom][i]->update(frame);
     }
-    p.update(frame);
+    if (running)
+        p->update(frame);
+}
+
+void Game::pause()
+{
+    running = false;
+    timer->stop();
+}
+
+void Game::resume()
+{
+    running = true;
+    timer->start(33);
+    p->setFocus();
+}
+
+void Game::Win()
+{
+    if (!running)
+        return;
+    pause();
+    musicOff();
+    p->Hide();
+    scene()->removeItem(p);
+
+    status.setMsg(QString("You Win!"), 300+600*currentRoom, 300);
+    status.Show();
+}
+
+void Game::Lose()
+{
+    if (!running)
+        return;
+    pause();
+    musicOff();
+    p = NULL;
+    for(int i=0; i<enemys[currentRoom].size(); i++){
+        if (enemys[currentRoom][i] != NULL)
+        {
+//            delete enemys[currentRoom][i];
+            enemys[currentRoom][i]->ClearBullets(false);
+            enemys[currentRoom][i]->Hide();
+            scene()->removeItem(enemys[currentRoom][i]);
+        }
+    }
+
+    status.setMsg(QString("Game Over!"), 300+600*currentRoom, 300);
+    status.Show();
 }
 
 void Game::switchRoom(int newRoom)
@@ -180,26 +236,26 @@ void Game::switchRoom(int newRoom)
         return;
     if (currentRoom < newRoom)
     {
-        p.setPos(PXstart[newRoom], PYstart[newRoom]);
+        p->setPos(PXstart[newRoom], PYstart[newRoom]);
     }
     else
-        p.setPos(PXend[newRoom], PYend[newRoom]);
+        p->setPos(PXend[newRoom], PYend[newRoom]);
     currentRoom = newRoom;
     view->setSceneRect(600*currentRoom, 0, 600, 600);
 }
 
 void Game::decrementEnemy()
 {
+    if (!running)
+        return;
     enemysPerRoom[currentRoom]--;
     if (enemysPerRoom[currentRoom] <= 0)
-        doors[currentRoom][currentRoom+1]->unlock();
+    {
+        if (currentRoom == 3)
+            Win();
+        else
+            doors[currentRoom][currentRoom+1]->unlock();
+    }
 }
 
 Game::~Game() {}
-
-void Game::start()
-{
-    qDebug() << "here";
-    view->setSceneRect(0, 0, 600, 600);
-    running = true;
-}

@@ -63,3 +63,8 @@ void Player::update(int frame)
 
     Character::update(frame);
 }
+
+Player::~Player()
+{
+}
+

@@ -9,30 +9,35 @@ Button::Button(QString name, QGraphicsItem *parent):QGraphicsRectItem(parent)
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(Qt::darkCyan);
     setBrush(brush);
-    QGraphicsTextItem* text = new QGraphicsTextItem(name,this);
+    text = new QGraphicsTextItem(name,this);
     int xpos=rect().width()/2 - text->boundingRect().width()/2;
     int ypos=rect().height()/2 - text->boundingRect().height()/2;
     text->setPos(xpos,ypos);
     setAcceptHoverEvents(true);
 }
 
+void Button::setText(QString txt)
+{
+    text->setPlainText(txt);
+}
+
 void Button::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "pressed";
+//    qDebug() << "pressed";
 }
 
 void Button::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "released";
+//    qDebug() << "released";
     Button::clicked();
 }
 
 void Button::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-    qDebug() << "in";
+//    qDebug() << "in";
 }
 
 void Button::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-    qDebug() << "out";
+//    qDebug() << "out";
 }

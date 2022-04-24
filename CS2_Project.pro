@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -22,7 +22,8 @@ SOURCES += \
     main.cpp \
     mainmenu.cpp \
     player.cpp \
-    wall.cpp
+    wall.cpp \
+    winlose_status.cpp
 
 HEADERS += \
     Button.h \
@@ -37,7 +38,8 @@ HEADERS += \
     gameobject.h \
     mainmenu.h \
     player.h \
-    wall.h
+    wall.h \
+    winlose_status.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

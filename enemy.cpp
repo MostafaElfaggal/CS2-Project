@@ -9,13 +9,13 @@ void Enemy::update(int frame){
     Character::update(frame);
 }
 
-void Enemy::setPtrs(Enemy **s)
+void Enemy::setPtrs(QVector<Enemy*>* s, int i)
 {
     self = s;
+    id = i;
 }
 
 Enemy::~Enemy()
 {
-    *self = NULL;
-    die();
+    (*self)[id] = NULL;
 }

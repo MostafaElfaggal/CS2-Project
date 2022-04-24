@@ -30,7 +30,7 @@ void Enemy1::update(int frame)
         }
         setDir((direction)i);
         Move((direction)i);
-        if (rand() % 10 == 0)
+        if (rand() % 5 == 0)
         {
             Shoot(false);
         }

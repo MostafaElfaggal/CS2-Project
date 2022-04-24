@@ -9,9 +9,12 @@
 
 class Button: public QObject, public QGraphicsRectItem {
     Q_OBJECT
+private:
+    QGraphicsTextItem* text;
 
 public:
     Button(QString name,QGraphicsItem * parent=NULL);
+    void setText(QString txt);
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
@@ -19,9 +22,6 @@ public:
 
 signals:
     void clicked();
-
-private:
-      QString text;
 };
 
 #endif // BUTTON_H

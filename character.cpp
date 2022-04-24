@@ -11,6 +11,8 @@ Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_f
     walkthrough = Walkthrough;
     dir = Dir;
 
+    canShoot = true;
+
     Health_bar.setBrush(QBrush(Qt::green));
     Border_Health_bar.setBrush(QBrush(Qt::black));
 
@@ -82,6 +84,12 @@ void Character::setDir(direction d)
     dir = d;
 }
 
+void Character::Hide()
+{
+    scene()->removeItem(&Health_bar);
+    scene()->removeItem(&Border_Health_bar);
+}
+
 int Character::checkStep(direction d)
 {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////// Collison
@@ -150,6 +158,8 @@ void Character::Move(direction d)
 
 void Character::Shoot(bool isPlayer)
 {
+    if (!canShoot)
+        return;
     int i = 0;
     while (bullets[i] != NULL && i<MaxBullets)
         i++;
@@ -174,6 +184,26 @@ void Character::Shoot(bool isPlayer)
     }
 }
 
+void Character::ClearBullets(bool isShooterDying) // the isShooterDying is for future use
+{
+    Bullet* bulletptr;
+    for (int i=0; i<MaxBullets; i++){
+        bulletptr = qgraphicsitem_cast<Bullet*>(bullets[i]);
+        if (bullets[i] != NULL)
+        {
+        if (!bulletptr->inCollision)
+            delete bullets[i];
+        else if (isShooterDying)
+            bulletptr->isShooterAlive = false;
+        }
+    }
+}
+
+void Character::blockBullets()
+{
+    canShoot = false;
+}
+
 void Character::increaseHealth(int h)
 {
     health += h;
@@ -184,4 +214,12 @@ void Character::decreaseHealth(int h)
     health -= h;
     if (health <= 0)
         delete this;
+}
+
+Character::~Character()
+{
+    blockBullets();
+    ClearBullets(true);
+    scene()->removeItem(this);
+    die();
 }

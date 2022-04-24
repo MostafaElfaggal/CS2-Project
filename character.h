@@ -10,6 +10,7 @@
 
 class Character : public GameObject
 {
+    Q_OBJECT
 private:
     int health;
     int Maxhealth;
@@ -17,6 +18,8 @@ private:
     int speed;
     bool walkthrough;
     direction dir;
+
+    bool canShoot;
 
     QGraphicsRectItem Health_bar;
     QGraphicsRectItem Border_Health_bar;
@@ -38,12 +41,20 @@ public:
     direction Dir();
     void setDir(direction d);
 
+    void Hide();
+
     int checkStep(direction d); // checks if there is collision at x and y location
     void Move(direction d); // moves speed pixels in the direction of dir (checks for obstackle collision if walkthrough is false using checkStep function)
 
     void Shoot(bool isPlayer); // shoots a bullet in the direction of dir
+    void ClearBullets(bool isShooterDying);
+    void blockBullets();
     void increaseHealth(int h);
     void decreaseHealth(int h);
+
+    ~Character();
+signals:
+    void die();
 };
 
 #endif // CHARACTER_H

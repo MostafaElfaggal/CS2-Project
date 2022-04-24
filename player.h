@@ -11,8 +11,12 @@ private:
     int toMove;
 public:
     Player(int x_pos, int y_pos);
+
     void keyPressEvent(QKeyEvent *event);
     void update(int frame);
+
+    ~Player();
+
 
 signals:
     void callSwitchView(int);

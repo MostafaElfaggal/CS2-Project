@@ -11,6 +11,8 @@
 #include "enemy.h"
 #include "door.h"
 
+#include "winlose_status.h"
+
 #include <QTimer>
 
 const int ROOM_COUNT = 4;
@@ -24,13 +26,15 @@ private:
     int PXstart[ROOM_COUNT], PYstart[ROOM_COUNT], PXend[ROOM_COUNT], PYend[ROOM_COUNT];
     Door* doors[ROOM_COUNT][ROOM_COUNT];
 
-    Player p;
+    Player* p;
     QVector<Enemy*> enemys[ROOM_COUNT];
     int enemysPerRoom[ROOM_COUNT];
 
     int frame;
     bool running;
     QTimer* timer;
+
+    WinLose_Status status;
 
     QGraphicsView* view;
 
@@ -42,7 +46,16 @@ public:
 public slots:
     void start();
     void run();
+    void pause();
+    void resume();
+
+    void Win();
+    void Lose();
+
     void switchRoom(int newRoom);
     void decrementEnemy();
+signals:
+    void musicOn();
+    void musicOff();
 };
 #endif // GAME_H
