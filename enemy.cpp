@@ -8,3 +8,14 @@ Enemy::Enemy(int x_pos, int y_pos, QString img_file) : Character(x_pos, y_pos, 5
 void Enemy::update(int frame){
     Character::update(frame);
 }
+
+void Enemy::setPtrs(Enemy **s)
+{
+    self = s;
+}
+
+Enemy::~Enemy()
+{
+    *self = NULL;
+    die();
+}

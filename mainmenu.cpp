@@ -51,7 +51,7 @@ void MainMenu::start()
 
 void MainMenu::close()
 {
-     QApplication::quit();
+    QApplication::quit();
     qDebug() << "closing";
 }
 

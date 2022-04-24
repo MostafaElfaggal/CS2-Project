@@ -2,12 +2,14 @@
 #define GAME_H
 
 #include <QVector>
-#include "gameobject.h"
 #include <QObject>
 #include <QGraphicsRectItem>
 #include <QGraphicsView>
 
+#include "gameobject.h"
 #include "player.h"
+#include "enemy.h"
+#include "door.h"
 
 #include <QTimer>
 
@@ -18,10 +20,11 @@ private:
     int currentRoom;
     QVector<GameObject*> rooms[3];
     int PXstart[3], PYstart[3], PXend[3], PYend[3];
-    GameObject* doors[3];
+    Door* doors[3][3];
 
     Player p;
-    QVector<GameObject*> enemys;
+    QVector<Enemy*> enemys[3];
+    int enemysPerRoom[3];
 
     int frame;
     QTimer* timer;
@@ -36,5 +39,6 @@ public:
 public slots:
     void run();
     void switchRoom(int newRoom);
+    void decrementEnemy();
 };
 #endif // GAME_H

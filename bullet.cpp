@@ -5,6 +5,7 @@
 #include "character.h"
 #include "player.h"
 #include "enemy1.h"
+#include "enemy2.h"
 
 Bullet::Bullet(GameObject *&s, int x_pos, int y_pos, int p, direction d, bool isPlayer) : GameObject(x_pos, y_pos, 25, 15, "Bullet.png")
 {
@@ -60,8 +61,8 @@ void Bullet::Move()
     {
         scene()->removeItem(this);
 
-        delete *self;
-        *self = NULL;
+        delete this;
+
     }
 }
 
@@ -75,7 +76,7 @@ bool Bullet::checkCollision()
         if (typeid(*(colliding_items[i])) == typeid(Wall) || typeid(*(colliding_items[i])) == typeid(Door))
         {
             return true;
-        } else if (typeid(*(colliding_items[i])) == typeid(Enemy1)) {
+        } else if (typeid(*(colliding_items[i])) == typeid(Enemy1) || typeid(*(colliding_items[i])) == typeid(Enemy2)) {
 
             creature = qgraphicsitem_cast<Character*>(colliding_items[i]);
             if (creature && byPlayer)
@@ -98,4 +99,9 @@ bool Bullet::checkCollision()
 void Bullet::update(int frame)
 {
     Move();
+}
+
+Bullet::~Bullet()
+{
+    *self = NULL;
 }

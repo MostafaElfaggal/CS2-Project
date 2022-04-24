@@ -8,9 +8,7 @@
 
 #include "mainmenu.h"
 
-#include "gameobject.h"
-
-#include "grass.h"
+#include "block.h"
 #include "wall.h"
 #include "door.h"
 #include "player.h"
@@ -32,21 +30,27 @@ Game::Game(QGraphicsView* v) : QGraphicsRectItem(QRect(0,0,1,1)), p(0, 0)
 void Game::init()
 {
     int boarddata[3][20][20];
+    enemysPerRoom[0] = 0;
+    enemysPerRoom[1] = 0;
+    enemysPerRoom[2] = 0;
 
     loadRoom(1, boarddata[0], 50, 50);
     loadRoom(2, boarddata[0], 650, 50);
     loadRoom(3, boarddata[0], 1250, 50);
 
 ///////////////////////////////////////////////////////////////////////////////////////// Enemys
-    for (int i=0; i<enemys.size(); i++) {
-        scene()->addItem(enemys[i]);
-    }
+    for (int _=0; _<3; _++)
+        for (int i=0; i<enemys[_].size(); i++) {
+            scene()->addItem(enemys[_][i]);
+            enemys[_][i]->init();
+            connect(enemys[_][i],SIGNAL(die()),this,SLOT(decrementEnemy()));
+        }
 /////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////// PLAYER
     p.setPos(PXstart[0], PYstart[0]);
-//    rooms[0].push_back(&p);
     scene()->addItem(&p);
+    p.init();
 
     p.setFocus();
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -97,17 +101,19 @@ void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
                  boarddata[2*i+1][2*j]=0;
                  boarddata[2*i][2*j+1]=0;
                  boarddata[2*i+1][2*j+1]=0;
-                 GameObject* tmp = new Enemy1(offsetX+50*j, offsetY+50*i);
-                 enemys.push_back(tmp);
-                 rooms[room-1].push_back(tmp);
+                 Enemy* tmp = new Enemy1(offsetX+50*j, offsetY+50*i);
+                 enemys[room-1].push_back(tmp);
+                 tmp->setPtrs(&enemys[room-1].last());
+                 enemysPerRoom[room-1]++;
              } else if (temp == "enemy2") {
                  boarddata[2*i][2*j]=0;
                  boarddata[2*i+1][2*j]=0;
                  boarddata[2*i][2*j+1]=0;
                  boarddata[2*i+1][2*j+1]=0;
-                 GameObject* tmp = new Enemy2(offsetX+50*j, offsetY+50*i);
-                 enemys.push_back(tmp);
-                 rooms[room-1].push_back(tmp);
+                 Enemy* tmp = new Enemy2(offsetX+50*j, offsetY+50*i);
+                 enemys[room-1].push_back(tmp);
+                 tmp->setPtrs(&enemys[room-1].last());
+                 enemysPerRoom[room-1]++;
              } else if(temp == "door1" || temp == "door2" || temp == "door3") {
                  boarddata[2*i][2*j]=-3;
                  boarddata[2*i+1][2*j]=-3;
@@ -129,13 +135,16 @@ void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
 
              if (boarddata[2*i][2*j] == -3)
              {
-                 background = new Door(offsetX+50*j,offsetY+50*i, room-1, to);
-                 doors[room-1] = background;
+                 if (room-1 > to)
+                     doors[room-1][to] = new Door(offsetX+50*j,offsetY+50*i, room-1, to, true); // opened
+                 else
+                     doors[room-1][to] = new Door(offsetX+50*j,offsetY+50*i, room-1, to); // closed
+                 background = doors[room-1][to];
              }
              else if(boarddata[2*i][2*j]<0)
                  background = new Wall(offsetX+50*j,offsetY+50*i, boarddata[2*i][2*j]);
              else
-                 background = new Grass(offsetX+50*j,offsetY+50*i);
+                 background = new Block(offsetX+50*j,offsetY+50*i);
              rooms[room-1].push_back(background);
              scene()->addItem(background);
             }
@@ -150,17 +159,33 @@ void Game::run() {
         if (rooms[currentRoom][i] != NULL)
             rooms[currentRoom][i]->update(frame);
     }
+    for (int i=0; i<enemys[currentRoom].size(); i++) {
+        if (enemys[currentRoom][i] != NULL)
+            enemys[currentRoom][i]->update(frame);
+    }
     p.update(frame);
 }
 
 void Game::switchRoom(int newRoom)
 {
+    Door* doorptr = qgraphicsitem_cast<Door*>(doors[currentRoom][newRoom]);
+    if (!doorptr->open)
+        return;
     if (currentRoom < newRoom)
+    {
         p.setPos(PXstart[newRoom], PYstart[newRoom]);
+    }
     else
         p.setPos(PXend[newRoom], PYend[newRoom]);
     currentRoom = newRoom;
     view->setSceneRect(600*currentRoom, 0, 600, 600);
+}
+
+void Game::decrementEnemy()
+{
+    enemysPerRoom[currentRoom]--;
+    if (enemysPerRoom[currentRoom] <= 0)
+        doors[currentRoom][currentRoom+1]->unlock();
 }
 
 Game::~Game() {}

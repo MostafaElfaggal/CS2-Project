@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     Button.cpp \
+    block.cpp \
     bullet.cpp \
     character.cpp \
     door.cpp \
@@ -18,7 +19,6 @@ SOURCES += \
     enemy2.cpp \
     game.cpp \
     gameobject.cpp \
-    grass.cpp \
     main.cpp \
     mainmenu.cpp \
     player.cpp \
@@ -26,6 +26,7 @@ SOURCES += \
 
 HEADERS += \
     Button.h \
+    block.h \
     bullet.h \
     character.h \
     door.h \
@@ -34,7 +35,6 @@ HEADERS += \
     enemy2.h \
     game.h \
     gameobject.h \
-    grass.h \
     mainmenu.h \
     player.h \
     wall.h

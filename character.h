@@ -5,7 +5,7 @@
 #include "bullet.h"
 
 #include "wall.h"
-#include "grass.h"
+#include "block.h"
 #include "door.h"
 
 class Character : public GameObject
@@ -26,6 +26,7 @@ private:
 
 public:
     Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets);
+    void init();
 
     virtual void update(int frame); // virtual to be discussed
 
