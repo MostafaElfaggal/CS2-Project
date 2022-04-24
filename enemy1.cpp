@@ -1,11 +1,11 @@
 #include "enemy1.h"
 
-Enemy1::Enemy1(int x_pos, int y_pos) : Enemy(x_pos, y_pos, "Horus1.png")
+Enemy1::Enemy1(int x_pos, int y_pos) : Enemy(x_pos, y_pos, "Anubis1.png")
 {
     // define animations
-    for (int i=0; i<9; i++)
+    for (int i=0; i<4; i++)
     {
-        a1.push_back(QPixmap("Horus" + QString::number(i+1) + ".png"));
+        a1.push_back(QPixmap("Anubis" + QString::number(i+1) + ".png"));
         a1[i] = a1[i].scaledToHeight(50);
         a1[i] = a1[i].scaledToWidth(50);
     }

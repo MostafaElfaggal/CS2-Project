@@ -4,8 +4,17 @@
 
 #include <QDebug>
 
-Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "Tweety.png", 100, 10, 25, false, RIGHT, 2)
+Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "Player1.png", 100, 10, 25, false, RIGHT, 2)
 {
+    for (int i=0; i<9; i++)
+    {
+        a1.push_back(QPixmap("Player" + QString::number(i+1) + ".png"));
+        a1[i] = a1[i].scaledToHeight(50);
+        a1[i] = a1[i].scaledToWidth(50);
+    }
+
+    animations = &a1;
+
     setFlag(QGraphicsItem::ItemIsFocusable);
     toMove = 4;
 }
@@ -54,6 +63,8 @@ void Player::keyPressEvent(QKeyEvent *event)
 
 void Player::update(int frame)
 {
+    if (frame%2 == 0)
+        animate();
     if (frame % 3 == 0)
     {
         if (toMove != 4)

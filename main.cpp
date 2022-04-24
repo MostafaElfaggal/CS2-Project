@@ -4,6 +4,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
+#include "mainwindow.h"
+
 #include "mainmenu.h"
 
 #include "game.h"
@@ -23,6 +25,9 @@ int main(int argc, char *argv[])
     view.setScene(&scene);
     view.setSceneRect(0, 600, 600, 600);
 
+    MainWindow w(&view);
+    w.show();
+
     Game g(&view);
     scene.addItem(&g);
     g.init();
@@ -31,7 +36,7 @@ int main(int argc, char *argv[])
     scene.addItem(&m);
     m.displaymenu();
 
-    view.show();
+//    view.show();
 
     return a.exec();
 }

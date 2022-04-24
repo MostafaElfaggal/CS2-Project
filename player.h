@@ -9,6 +9,7 @@ class Player : public Character
     Q_OBJECT
 private:
     int toMove;
+    QVector<QPixmap> a1;
 public:
     Player(int x_pos, int y_pos);
 

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGraphicsView>
 
 namespace Ui {
 class MainWindow;
@@ -12,7 +13,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QGraphicsView* view, QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
@@ -20,6 +21,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QGraphicsView* v;
 };
 
 #endif // MAINWINDOW_H

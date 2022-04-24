@@ -2,10 +2,11 @@
 #include "ui_mainwindow.h"
 #include "QMessageBox"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QGraphicsView* view, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    v = view;
     ui->setupUi(this);
 }
 
@@ -22,6 +23,8 @@ void MainWindow::on_pushButton_login_clicked()
     if (username=="test" && password == "test")
     {
         QMessageBox::information(this,"Login","Username and password are correct");
+        this->hide();
+        v->show();
     }
     else
     {
