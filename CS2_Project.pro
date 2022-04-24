@@ -21,6 +21,7 @@ SOURCES += \
     gameobject.cpp \
     main.cpp \
     mainmenu.cpp \
+    mainwindow.cpp \
     player.cpp \
     wall.cpp \
     winlose_status.cpp
@@ -37,6 +38,7 @@ HEADERS += \
     game.h \
     gameobject.h \
     mainmenu.h \
+    mainwindow.h \
     player.h \
     wall.h \
     winlose_status.h
@@ -48,3 +50,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     Resources.qrc
+
+FORMS += \
+    mainwindow.ui
