@@ -3,23 +3,29 @@
 
 #include <QGraphicsRectItem>
 #include <QGraphicsScene>
-#include "Button.h"
+#include <QGraphicsView>
 #include <QObject>
+
+#include "game.h"
+#include "Button.h"
 
 
 class MainMenu : public QObject , public QGraphicsRectItem
 {
     Q_OBJECT
+private:
+    QGraphicsView* view;
 public:
 
-    MainMenu();
+    MainMenu(Game* g);
     void displaymenu();
 
-    public slots:
-
+public slots:
     void start();
     void close();
     void music();
+signals:
+    void startGame();
 };
 
 #endif // MAINMENU_H

@@ -29,6 +29,7 @@ private:
     int enemysPerRoom[ROOM_COUNT];
 
     int frame;
+    bool running;
     QTimer* timer;
 
     QGraphicsView* view;
@@ -39,6 +40,7 @@ public:
     void loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY);
     ~Game();
 public slots:
+    void start();
     void run();
     void switchRoom(int newRoom);
     void decrementEnemy();

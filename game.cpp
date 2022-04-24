@@ -57,6 +57,7 @@ void Game::init()
 /////////////////////////////////////////////////////////////////////////////////////////
 
     currentRoom = 0;
+    running = false;
 
     timer->start(33);
 }
@@ -156,6 +157,9 @@ void Game::loadRoom(int room, int boarddata[20][20], int offsetX, int offsetY)
 }
 
 void Game::run() {
+    if (!running)
+        return;
+
     frame++;
     frame %= 1000;
     for (int i=0; i<rooms[currentRoom].size(); i++) {
@@ -192,3 +196,10 @@ void Game::decrementEnemy()
 }
 
 Game::~Game() {}
+
+void Game::start()
+{
+    qDebug() << "here";
+    view->setSceneRect(0, 0, 600, 600);
+    running = true;
+}
