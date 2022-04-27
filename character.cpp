@@ -16,10 +16,10 @@ Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_f
     Health_bar.setBrush(QBrush(Qt::green));
     Border_Health_bar.setBrush(QBrush(Qt::black));
 
-    Health_bar.setRect(QRect(x()+1,y()-15,GetHealth(),5));
-    Border_Health_bar.setRect(QRect(x(),y()-16,size_w,7));
-
+    Health_bar.setRect(QRect(0,0,GetHealth(),5));
     Health_bar.setPos(x()+1,y()-15);
+
+    Border_Health_bar.setRect(QRect(0,0,size_w, 7));
     Border_Health_bar.setPos(x(),y()-16);
 
     bullets = new GameObject* [MaxBullets];
@@ -128,7 +128,12 @@ int Character::checkStep(direction d)
         {
             doorptr = qgraphicsitem_cast<Door*>(colliding_Check[i]);
             if (doorptr)
-                collision = doorptr->to + 1; // room number from 1 to 3
+            {
+                if (!doorptr->open)
+                    collision = 9;
+                else
+                    collision = (doorptr->from*10 + doorptr->to) + 1; // room number from 1 to 3
+            }
         }
     }
     scene()->removeItem(Check);

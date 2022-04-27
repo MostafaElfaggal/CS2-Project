@@ -4,16 +4,19 @@
 
 #include <QDebug>
 
-Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "Player1.png", 100, 10, 25, false, RIGHT, 2)
+Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "PlayerE_01.png", 100, 10, 25, false, RIGHT, 2)
 {
-    for (int i=0; i<4; i++)
+    // define animations
+    QString chars[4] = {"N", "S", "E", "W"};
+    for (int _=0; _<4; _++)
+    for (int i=0; i<3; i++)
     {
-        a1.push_back(QPixmap("Player" + QString::number(i+1) + ".png"));
-        a1[i] = a1[i].scaledToHeight(50);
-        a1[i] = a1[i].scaledToWidth(50);
+        as[_].push_back(QPixmap("Player" + chars[_] + "_" + QString::number(i+1).rightJustified(2, '0') + ".png"));
+        as[_][i] = as[_][i].scaledToHeight(50);
+        as[_][i] = as[_][i].scaledToWidth(50);
     }
 
-    animations = &a1;
+    animations = &as[2];
 
     setFlag(QGraphicsItem::ItemIsFocusable);
     toMove = 4;
@@ -52,25 +55,28 @@ void Player::keyPressEvent(QKeyEvent *event)
         return;
     }
 
-    if (check < 0)
+    if (check < 0 || check == 9)
         toMove = 4;
     else if (check > 0)
     {
-        toMove = 4;
         callSwitchView(check-1);
     }
 }
 
 void Player::update(int frame)
 {
-    if (frame%2 == 0)
-        animate();
+//    if (frame%3 == 0)
     if (frame % 3 == 0)
     {
+        animations = &as[dir];
         if (toMove != 4)
+        {
             Move((direction)toMove);
+        }
         toMove = 4;
+        animate();
     }
+
 
     Character::update(frame);
 }

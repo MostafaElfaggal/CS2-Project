@@ -7,6 +7,7 @@
 #include "mainwindow.h"
 
 #include "mainmenu.h"
+#include "pausemenu.h"
 
 #include "game.h"
 
@@ -18,15 +19,16 @@ int main(int argc, char *argv[])
     QGraphicsScene scene;
 
     QGraphicsView view;
-    view.setFixedSize(610, 610);
+    view.setFixedSize(1310, 760);
     view.setWindowTitle("Game");
     view.setBackgroundBrush(QBrush(Qt::black));
 
     view.setScene(&scene);
-    view.setSceneRect(0, 600, 600, 600);
+//    view.setSceneRect(0, 1350, 1300, 750);
+    view.setSceneRect(0, 1350, 1300, 750);
 
-    MainWindow w(&view);
-    w.show();
+//    MainWindow w(&view);
+//    w.show();
 
     Game g(&view);
     scene.addItem(&g);
@@ -34,9 +36,14 @@ int main(int argc, char *argv[])
 
     MainMenu m(&g);
     scene.addItem(&m);
-    m.displaymenu();
+    m.init(1300/2-500/2, (1350+750/2)-500/2, "Start Game");
 
-//    view.show();
+    PauseMenu m2(&g);
+    scene.addItem(&m2);
+    m2.init(0, 0, "Resume Game");
+    m2.Hide();
+
+    view.show();
 
     return a.exec();
 }

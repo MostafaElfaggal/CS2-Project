@@ -20,6 +20,7 @@ private:
 public:
     QVector<QPixmap>* animations;
     GameObject(float x_pos, float y_pos, int size_w, int size_h, QString img_file);
+    void setImage(int size_w, int size_h, QString img_file);
     void animate();
     virtual void update(int frame);
 };

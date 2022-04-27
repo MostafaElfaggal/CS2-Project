@@ -6,7 +6,7 @@
 class Enemy1 : public Enemy
 {
 private:
-    QVector<QPixmap> a1;
+    QVector<QPixmap> as[4];
 public:
     Enemy1(int x_pos, int y_pos);
     void update(int frame);

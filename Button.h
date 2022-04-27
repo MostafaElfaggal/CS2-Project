@@ -3,7 +3,10 @@
 
 #include <QObject>
 #include <QGraphicsRectItem>
-#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneEvent>
+//#include <QGraphicsSceneMouseEvent>
+
+#include <QGraphicsTextItem>
 
 #include <QDebug>
 
@@ -13,7 +16,8 @@ private:
     QGraphicsTextItem* text;
 
 public:
-    Button(QString name,QGraphicsItem * parent=NULL);
+    Button(QString name, int size_w, int size_h, QGraphicsItem * parent=NULL);
+    ~Button();
     void setText(QString txt);
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);

@@ -6,7 +6,7 @@
 class Door : public GameObject
 {
 public:
-    Door(int x_pos, int y_pos, int f, int t, bool isOpen=false);
+    Door(int x_pos, int y_pos, int f, int t);
     int from, to;
     bool open;
 

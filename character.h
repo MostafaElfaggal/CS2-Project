@@ -17,7 +17,6 @@ private:
     int power;
     int speed;
     bool walkthrough;
-    direction dir;
 
     bool canShoot;
 
@@ -28,6 +27,8 @@ private:
     GameObject **bullets;
 
 public:
+    direction dir;
+
     Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets);
     void init();
 

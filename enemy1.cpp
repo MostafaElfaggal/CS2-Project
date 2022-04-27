@@ -1,25 +1,26 @@
 #include "enemy1.h"
 
-Enemy1::Enemy1(int x_pos, int y_pos) : Enemy(x_pos, y_pos, "Anubis1.png")
+Enemy1::Enemy1(int x_pos, int y_pos) : Enemy(x_pos, y_pos, "UndeadKingS_01.png")
 {
     // define animations
-    for (int i=0; i<4; i++)
+    QString chars[4] = {"N", "S", "E", "W"};
+    for (int _=0; _<4; _++)
+    for (int i=0; i<3; i++)
     {
-        a1.push_back(QPixmap("Anubis" + QString::number(i+1) + ".png"));
-        a1[i] = a1[i].scaledToHeight(50);
-        a1[i] = a1[i].scaledToWidth(50);
+        as[_].push_back(QPixmap("UndeadKing" + chars[_] + "_" + QString::number(i+1).rightJustified(2, '0') + ".png"));
+        as[_][i] = as[_][i].scaledToHeight(50);
+        as[_][i] = as[_][i].scaledToWidth(50);
     }
 
-    animations = &a1;
+    animations = &as[3];
 }
 
 void Enemy1::update(int frame)
 {
-    if (frame%2 == 0) {
-        animate(); // use the animate function every second which will auto scroll through the different animations
-    }
+    if (frame%3 == 0)
+        animations = &as[dir];
 
-    if (frame % 6 == 0)
+    if (frame % 10 == 0)
     {
         int i = rand() % 4;
 
@@ -35,5 +36,9 @@ void Enemy1::update(int frame)
             Shoot(false);
         }
     }
+
+    if (frame%3 == 0)
+        animate(); // use the animate function every second which will auto scroll through the different animations
+
     Enemy::update(frame);
 }

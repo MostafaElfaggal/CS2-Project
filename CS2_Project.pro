@@ -13,6 +13,7 @@ SOURCES += \
     block.cpp \
     bullet.cpp \
     character.cpp \
+    clickableimage.cpp \
     door.cpp \
     enemy.cpp \
     enemy1.cpp \
@@ -22,6 +23,8 @@ SOURCES += \
     main.cpp \
     mainmenu.cpp \
     mainwindow.cpp \
+    menu.cpp \
+    pausemenu.cpp \
     player.cpp \
     wall.cpp \
     winlose_status.cpp
@@ -31,6 +34,7 @@ HEADERS += \
     block.h \
     bullet.h \
     character.h \
+    clickableimage.h \
     door.h \
     enemy.h \
     enemy1.h \
@@ -39,6 +43,8 @@ HEADERS += \
     gameobject.h \
     mainmenu.h \
     mainwindow.h \
+    menu.h \
+    pausemenu.h \
     player.h \
     wall.h \
     winlose_status.h

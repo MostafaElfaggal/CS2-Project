@@ -2,18 +2,24 @@
 #include <QBrush>
 
 
-Button::Button(QString name, QGraphicsItem *parent):QGraphicsRectItem(parent)
+Button::Button(QString name, int size_w, int size_h, QGraphicsItem *parent):QGraphicsRectItem(parent)
 {
-    setRect(0,0,200,50);
+    setRect(0,0,size_w,size_h);
     QBrush brush;
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(Qt::darkCyan);
     setBrush(brush);
+
     text = new QGraphicsTextItem(name,this);
     int xpos=rect().width()/2 - text->boundingRect().width()/2;
     int ypos=rect().height()/2 - text->boundingRect().height()/2;
     text->setPos(xpos,ypos);
+
     setAcceptHoverEvents(true);
+}
+
+Button::~Button()
+{
 }
 
 void Button::setText(QString txt)
@@ -29,7 +35,7 @@ void Button::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Button::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 //    qDebug() << "released";
-    Button::clicked();
+    clicked();
 }
 
 void Button::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
