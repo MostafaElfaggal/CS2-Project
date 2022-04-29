@@ -5,4 +5,4 @@ Block::Block(int x_pos, int y_pos) : GameObject(x_pos, y_pos, 50, 50, "Road.png"
     setZValue(1);
 }
 
-void Block::update(int frame){}
+void Block::updateFrame(int frame){}

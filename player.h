@@ -16,7 +16,7 @@ public:
     void keyPressEvent(QKeyEvent *event);
     void increaseHealth(int h);
     void decreaseHealth(int h);
-    void update(int frame);
+    void updateFrame(int frame);
 
     ~Player();
 

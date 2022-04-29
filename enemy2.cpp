@@ -24,7 +24,7 @@ Enemy2::Enemy2(int x_pos, int y_pos, int r) : Enemy(x_pos, y_pos, "flyingS_01.pn
     animations = &as[3];
 }
 
-void Enemy2::update(int frame)
+void Enemy2::updateFrame(int frame)
 {
 //    if (frame%2 == 0) {
 //        animate(); // use the animate function every second which will auto scroll through the different animations
@@ -36,16 +36,16 @@ void Enemy2::update(int frame)
     if (frame%6 == 0)
     {
         int i = rand()%4;
-        int check = checkStep((direction)i);
+        int c = checkStep((direction)i);
 
-        while(check != 0 && check != -1)
+        while (c == -2 || (c>0 & c<40))
         {
             i++;
-            i%=4;
-            check = checkStep((direction)i);
+            i %= 4;
+            c = checkStep((direction)i);
         }
-            setDir((direction)i);
-            Move((direction)i);
+        setDir((direction)i);
+        Move((direction)i);
     }
 
     if (rand()%25 == 0)
@@ -54,5 +54,5 @@ void Enemy2::update(int frame)
     if (frame%3 == 0)
         animate();
 
-    Enemy::update(frame);
+    Enemy::updateFrame(frame);
 }

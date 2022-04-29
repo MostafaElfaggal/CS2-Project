@@ -8,6 +8,9 @@
 #include "wall.h"
 #include "block.h"
 #include "door.h"
+#include "gameitem.h"
+
+#include "rectangle.h"
 
 class Character : public GameObject
 {
@@ -21,12 +24,17 @@ private:
 
     bool canShoot;
 
-    QGraphicsRectItem Health_bar;
-    QGraphicsRectItem Border_Health_bar;
+    bool toBeDeleted;
+
+    Rectangle Health_bar;
+    Rectangle Border_Health_bar;
 
     const int MaxBullets;
     int BulletsCount;
 //    GameObject **bullets;
+
+protected:
+    bool isPlayer;
 
 public:
     int health;
@@ -38,7 +46,7 @@ public:
     Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets, int r);
     void init();
 
-    virtual void update(int frame); // virtual to be discussed
+    virtual void updateFrame(int frame); // virtual to be discussed
 
     int Health();
     int GetHealth();
@@ -64,7 +72,7 @@ public slots:
     void decrementBullets();
 
 signals:
-    void ClearBullets();
+    void ClearBullets(bool);
     void die(int);
 };
 

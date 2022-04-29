@@ -15,7 +15,7 @@ Enemy1::Enemy1(int x_pos, int y_pos, int r) : Enemy(x_pos, y_pos, "UndeadKingS_0
     animations = &as[3];
 }
 
-void Enemy1::update(int frame)
+void Enemy1::updateFrame(int frame)
 {
     if (frame%3 == 0)
         animations = &as[dir];
@@ -24,10 +24,13 @@ void Enemy1::update(int frame)
     {
         int i = rand() % 4;
 
-        while (checkStep((direction)i) != 0)
+        int c = checkStep((direction)i);
+
+        while (c != 0 && c < 100)
         {
             i++;
             i %= 4;
+            c = checkStep((direction)i);
         }
         setDir((direction)i);
         Move((direction)i);
@@ -38,5 +41,5 @@ void Enemy1::update(int frame)
     if (frame%3 == 0)
         animate();
 
-    Enemy::update(frame);
+    Enemy::updateFrame(frame);
 }

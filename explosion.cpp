@@ -1,6 +1,6 @@
 #include "explosion.h"
 
-Explosion::Explosion(float x_pos, float y_pos) : GameObject(x_pos, y_pos, 50, 50, "Explosion_1.png", "explosion")
+Explosion::Explosion(float x_pos, float y_pos) : GameItem(x_pos, y_pos, "Explosion_1.png")
 {
     current = 1;
     for (int i=0; i<4; i++)
@@ -9,14 +9,11 @@ Explosion::Explosion(float x_pos, float y_pos) : GameObject(x_pos, y_pos, 50, 50
         as[i] = as[i].scaledToHeight(50);
         as[i] = as[i].scaledToWidth(50);
     }
-
-    animations = &as;
-    setZValue(80);
 }
 
-void Explosion::update(int frame)
+void Explosion::updateFrame(int frame)
 {
-    if (current == 4)
+    if (current_animations == 3)
         delete this;
     else if (frame%2 == 0)
     {
@@ -27,5 +24,4 @@ void Explosion::update(int frame)
 
 Explosion::~Explosion()
 {
-    scene()->removeItem(this);
 }

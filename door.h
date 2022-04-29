@@ -17,7 +17,7 @@ public:
     Door(int x_pos, int y_pos, int f, int t);
     void init();
 
-    void update(int frame);
+    void updateFrame(int frame);
 
     void unlock();
     ~Door();

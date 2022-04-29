@@ -6,6 +6,7 @@ WinLose_Status::WinLose_Status()
     QFont titleFont("Comic Sans",80);
     msg.setFont(titleFont);
 
+    prepareGeometryChange();
     setPos(0, 0);
     setBrush(QBrush(Qt::blue));
     setZValue(13);
@@ -26,6 +27,7 @@ void WinLose_Status::setLoc(float x_pos, float y_pos)
     float wm=msg.boundingRect().width(), hm=msg.boundingRect().height();
     float w=boundingRect().width(), h=boundingRect().height();
 
+    prepareGeometryChange();
     setPos(x_pos-w/2, y_pos-h/2);
 
     msg.setPos(x_pos-wm/2,y_pos-hm/2);

@@ -8,14 +8,14 @@
 #include <QList>
 
 enum direction {
-    UP, DOWN, RIGHT, LEFT
+    UP, DOWN, RIGHT, LEFT, NONE
 };
 
 
 class GameObject : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
-private:
+protected:
     int current_animations = 0;
 
 public:
@@ -26,7 +26,8 @@ public:
     virtual void init();
     void setImage(int size_w, int size_h, QString img_file);
     void animate(); // use the animate function every x frames which will auto scroll through the different animations
-    virtual void update(int frame);
+    virtual void updateFrame(int frame);
+    void setLoc(float x_pos, float y_pos);
 };
 
 #endif // GAMEOBJECT_H

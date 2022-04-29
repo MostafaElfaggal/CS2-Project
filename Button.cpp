@@ -47,5 +47,11 @@ void Button::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void Button::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-//    qDebug() << "out";
+    //    qDebug() << "out";
+}
+
+void Button::setLoc(float x_pos, float y_pos)
+{
+    prepareGeometryChange();
+    setPos(x_pos, y_pos);
 }

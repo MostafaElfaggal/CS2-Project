@@ -17,6 +17,8 @@
 #include "boss.h"
 #include "Button.h"
 
+#include "thunder.h"
+
 int Game::room(int x_pos, int y_pos)
 {
     // 0 1
@@ -59,6 +61,10 @@ Game::Game(QGraphicsView *v) : QGraphicsRectItem(QRect(0, 0, 1, 1)), pauseButton
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(run()));
     connect(p, SIGNAL(callSwitchView(int)), this, SLOT(switchRoom(int)));
+
+    bg.setPixmap(QPixmap("bg.png"));
+    bg.setPos(viewOffset[0], viewOffset[1]);
+    bg.setZValue(0);
 }
 
 void Game::init()
@@ -71,7 +77,7 @@ void Game::init()
     loadWorld(); // enemies/blocks/walls/doors
 
     ///////////////////////////////////////////////////////////////////////////////////////// PLAYER
-    p->setPos(Pstart[0], Pstart[1]);
+    p->setLoc(Pstart[0], Pstart[1]);
     scene()->addItem(p);
     p->init();
     connect(p, SIGNAL(die(int)), this, SLOT(Lose()));
@@ -92,6 +98,8 @@ void Game::init()
 
     currentRoom = 0;
     running = false;
+
+    scene()->addItem(&bg);
 }
 
 void Game::loadWorld()
@@ -148,12 +156,12 @@ void Game::loadWorld()
             } else if (temp == "bs")
             {
                 boarddata[i][j] = 1;
-                Enemy *tmp = new Boss(offsetX + 50 * j, offsetY + 50 * i, room(j,i));
+                boss = new Boss(offsetX + 50 * j, offsetY + 50 * i, room(j,i));
                 enemysPerRoom[room(j, i)]++;
 
-                scene()->addItem(tmp);
-                tmp->init();
-                connect(tmp, SIGNAL(die(int)), this, SLOT(decrementEnemy(int)));
+                scene()->addItem(boss);
+                boss->init();
+                connect(boss, SIGNAL(die(int)), this, SLOT(decrementEnemy(int)));
             } else if (temp == "d1" || temp == "d2" || temp == "d3" || temp == "d4")
             { // doors
                 if (temp == "d1")
@@ -165,6 +173,12 @@ void Game::loadWorld()
                 else if (temp == "d4")
                     to = 3;
                 boarddata[i][j] = -1 * (to + 3);
+            } else if (temp == "hp")
+            { // health potion
+                boarddata[i][j] = 1;
+                HealthPot *tmp = new HealthPot(offsetX + 50 * j, offsetY + 50 * i);
+                scene()->addItem(tmp);
+//                connect(tmp, SIGNAL(die(int)), this, SLOT(decrementEnemy(int)));
             }
             else
             {
@@ -249,11 +263,32 @@ void Game::run()
     QList<QGraphicsItem*>::iterator i;
     for (i = items.begin(); i != items.end() && running; ++i)
     {
-
+        if (!(*i))
+            continue;
         GameObject* itemptr = dynamic_cast<GameObject*>(*i);
         if (itemptr)
-            itemptr->update(frame);
+            itemptr->updateFrame(frame);
     }
+
+    // testing thunder
+    if (frame%300 == 0)
+    {
+        int i, j;
+        i = rand()%8+14;
+        j = rand()%8+1;
+        while(boarddata[i][j] < 0)
+        {
+            i = rand()%8+14;
+            j = rand()%8+1;
+        }
+
+        Thunder* t = new Thunder(offsetX + 50 * j, offsetY + 50 * i);
+//        Thunder* t = new Thunder(offsetX + 50 * 1, offsetY + 50 * 8);
+//        Thunder* t = new Thunder(125, 175);
+        scene()->addItem(t);
+    }
+
+    scene()->update(0,0,1300,2100);
 }
 
 void Game::pauseMenu()
@@ -295,13 +330,13 @@ void Game::Win()
     pause();
     musicOff();
     p->blockBullets();
-    p->ClearBullets();
+    p->ClearBullets(true);
     p->Hide();
     scene()->removeItem(p);
 
     // clearing enemy bullets
     QVector<Enemy*> es;
-    QVector<QGraphicsItem*> eps;
+    QVector<QGraphicsItem*> gitms;
     QList<QGraphicsItem*> items = scene()->items();
     QList<QGraphicsItem*>::iterator i;
     for (i=items.begin(); i!=items.end(); i++)
@@ -312,16 +347,17 @@ void Game::Win()
     }
 
     for (auto i=es.begin(); i!=es.end(); ++i)
-        (*i)->ClearBullets();
+        (*i)->ClearBullets(true);
 
-    // explosions
+    // gameitems
     items = scene()->items();
     for (i=items.begin(); i!=items.end(); i++)
     {
-        if (typeid(*i) == typeid(Explosion))
-            eps.push_back(*i);
+        GameItem* giptr = dynamic_cast<GameItem*>(*i);
+        if (giptr)
+            gitms.push_back(*i);
     }
-    for (auto i=eps.begin(); i!=eps.end(); ++i)
+    for (auto i=gitms.begin(); i!=gitms.end(); ++i)
         delete (*i);
 
     status.setMsg(QString("You Win!"), 1350/2+viewOffset[0], 750/2+viewOffset[1]);
@@ -335,12 +371,12 @@ void Game::Lose()
     pause();
     musicOff();
     p->blockBullets();
-    p->ClearBullets();
+    p->ClearBullets(true);
     p = NULL;
 
     // clearing enemy bullets and deleting enemies
     QVector<Enemy*> es;
-    QVector<QGraphicsItem*> eps;
+    QVector<QGraphicsItem*> gitms;
     QList<QGraphicsItem*> items = scene()->items();
     QList<QGraphicsItem*>::iterator i;
     for (i=items.begin(); i!=items.end(); i++)
@@ -353,18 +389,19 @@ void Game::Lose()
     for (auto i=es.begin(); i!=es.end(); ++i)
     {
         (*i)->isExplode = false;
-        (*i)->ClearBullets();
+        (*i)->ClearBullets(true);
         delete (*i);
     }
 
-    // explosions
+    // gameitems
     items = scene()->items();
     for (i=items.begin(); i!=items.end(); i++)
     {
-        if (typeid(*i) == typeid(Explosion))
-            eps.push_back(*i);
+        GameItem* giptr = dynamic_cast<GameItem*>(*i);
+        if (giptr)
+            gitms.push_back(*i);
     }
-    for (auto i=eps.begin(); i!=eps.end(); ++i)
+    for (auto i=gitms.begin(); i!=gitms.end(); ++i)
         delete (*i);
 
     status.setMsg(QString("Game Over!"), 1350/2+viewOffset[0], 750/2+viewOffset[1]);
@@ -389,16 +426,20 @@ void Game::switchRoom(int r)
         view->setSceneRect(0, 600, 1300, 750);
         viewOffset[0] = 0;
         viewOffset[1] = 600;
-        pauseButton.setPos(viewOffset[0]+25, viewOffset[1]+25);
+        pauseButton.setLoc(viewOffset[0]+25, viewOffset[1]+25);
         HealthBar.setLoc(50, viewOffset[1]+662.5);
+
+        bg.setPos(viewOffset[0], viewOffset[1]);
     }
     else if (newRoom == 2 && fromRoom == 1)
     {
         view->setSceneRect(0, 0, 1300, 750);
         viewOffset[0] = 0;
         viewOffset[1] = 0;
-        pauseButton.setPos(viewOffset[0]+25, viewOffset[1]+25);
+        pauseButton.setLoc(viewOffset[0]+25, viewOffset[1]+25);
         HealthBar.setLoc(50, 635);
+
+        bg.setPos(viewOffset[0], viewOffset[1]);
     }
 }
 

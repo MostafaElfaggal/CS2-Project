@@ -2,6 +2,7 @@
 
 GameObject::GameObject(float x_pos, float y_pos, int size_w, int size_h, QString img_file, QString item)
 {
+    prepareGeometryChange();
     setImage(size_w, size_h, img_file);
     setPos(x_pos, y_pos);
 
@@ -28,5 +29,12 @@ void GameObject::animate() {
     current_animations %= animations->size();
 }
 
-void GameObject::update(int frame) {
+void GameObject::updateFrame(int frame) {
+}
+
+void GameObject::setLoc(float x_pos, float y_pos)
+{
+    prepareGeometryChange();
+    setPos(x_pos, y_pos);
+    QGraphicsItem::update();
 }

@@ -32,18 +32,18 @@ Bullet::Bullet(int x_pos, int y_pos, int p, direction d, bool isPlayer) : GameOb
     switch(d){
     case UP:
         setRotation(270);
-        setPos(x()-translation, y());
+        setLoc(x()-translation, y());
         break;
     case DOWN:
         setRotation(90);
-        setPos(x()+translation, y());
+        setLoc(x()+translation, y());
         break;
     case RIGHT:
-        setPos(x(), y()-translation);
+        setLoc(x(), y()-translation);
         break;
     case LEFT:
         setRotation(180);
-        setPos(x(), y()+translation);
+        setLoc(x(), y()+translation);
         break;
     }
 
@@ -55,16 +55,16 @@ void Bullet::Move()
     switch (dir)
     {
     case 0:
-        setPos(x(), y() - speed);
+        setLoc(x(), y() - speed);
         break;
     case 1:
-        setPos(x(), y() + speed);
+        setLoc(x(), y() + speed);
         break;
     case 2:
-        setPos(x() + speed, y());
+        setLoc(x() + speed, y());
         break;
     case 3:
-        setPos(x() - speed, y());
+        setLoc(x() - speed, y());
         break;
     }
 
@@ -116,7 +116,7 @@ bool Bullet::checkCollision()
     return false;
 }
 
-void Bullet::update(int frame)
+void Bullet::updateFrame(int frame)
 {
     if (frame%2 == 0) {
         animate();
@@ -132,9 +132,9 @@ Bullet::~Bullet()
         removeBullet();
 }
 
-void Bullet::deleteBullet()
+void Bullet::deleteBullet(bool isShooterDying)
 {
-    isShooterAlive = false;
+    isShooterAlive = !isShooterDying;
     if (!inCollision)
         delete this;
 }

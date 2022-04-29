@@ -20,6 +20,7 @@ Menu::Menu(Game* g, int size_w, int size_h) : QGraphicsRectItem(QRect(0,0,size_w
 
 void Menu::displaymenu(int x_pos, int y_pos)
 {
+    prepareGeometryChange();
     setPos(x_pos, y_pos);
     float w=boundingRect().width();
     float h=boundingRect().height();
@@ -31,15 +32,15 @@ void Menu::displaymenu(int x_pos, int y_pos)
 
     int bxPos = x() + w/2 - playButton->boundingRect().width()/2;
     int byPos = y()+h/2;
-    playButton -> setPos(bxPos,byPos);
+    playButton -> setLoc(bxPos,byPos);
 
     int mxPos = x() + w/2 - musicButton->boundingRect().width()/2;
     int myPos = y()+(h/2)+h*3/20;
-    musicButton -> setPos(mxPos,myPos);
+    musicButton -> setLoc(mxPos,myPos);
 
     int qxPos = x() + w/2 - quitButton->boundingRect().width()/2;
     int qyPos = y()+(h/2)+h*6/20;
-    quitButton -> setPos(qxPos,qyPos);
+    quitButton -> setLoc(qxPos,qyPos);
 }
 
 void Menu::init(int x_pos, int y_pos, QString btn1_msg)

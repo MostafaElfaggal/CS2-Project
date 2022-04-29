@@ -25,6 +25,7 @@ void bar::init()
 
 void bar::setLoc(float x_pos, float y_pos)
 {
+    prepareGeometryChange();
     setPos(x_pos, y_pos);
     x_pos += 79;
     y_pos += 20;
@@ -34,9 +35,9 @@ void bar::setLoc(float x_pos, float y_pos)
 
 void bar::updateValue(float v)
 {
-    qDebug() << v;
     v = 104*v/100;
     v = (int)v;
+    if (v>100) v = 104;
     if (v<0) v=0;
 
     for (int i=0; i<v; i++)

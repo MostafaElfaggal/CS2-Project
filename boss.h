@@ -9,7 +9,7 @@ private:
     QVector<QPixmap> as;
 public:
     Boss(float x_pos, float y_pos, int r);
-    void update(int frame);
+    void updateFrame(int frame);
 };
 
 #endif // BOSS_H

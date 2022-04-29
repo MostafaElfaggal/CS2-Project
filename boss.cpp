@@ -14,7 +14,7 @@ Boss::Boss(float x_pos, float y_pos, int r) : Enemy(x_pos, y_pos, "BlueBoss_01.p
     isExplode = false;
 }
 
-void Boss::update(int frame)
+void Boss::updateFrame(int frame)
 {
 //    if (frame%3 == 0)
 //        animations = &as[dir];
@@ -23,10 +23,13 @@ void Boss::update(int frame)
     {
         int i = rand() % 4;
 
-        while (checkStep((direction)i) != 0)
+        int c = checkStep((direction)i);
+
+        while (c != 0 && c < 100)
         {
             i++;
             i %= 4;
+            c = checkStep((direction)i);
         }
         setDir((direction)i);
         Move((direction)i);
@@ -37,5 +40,5 @@ void Boss::update(int frame)
     if (frame%3 == 0)
         animate();
 
-    Enemy::update(frame);
+    Enemy::updateFrame(frame);
 }

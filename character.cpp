@@ -4,6 +4,9 @@
 
 Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets, int r) : GameObject(x_pos, y_pos, size_w, size_h, img_file, "character"), MaxBullets(maxBullets)
 {
+
+    isPlayer = false;
+
     MyRoom = r;
 
     health = Health;
@@ -18,14 +21,16 @@ Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_f
     BulletsCount = 0;
     canShoot = true;
 
+    toBeDeleted = false;
+
     Health_bar.setBrush(QBrush(Qt::green));
     Border_Health_bar.setBrush(QBrush(Qt::black));
 
     Health_bar.setRect(QRect(0,0,GetHealth(),5));
-    Health_bar.setPos(x()+1,y()-15);
+    Health_bar.setLoc(x()+1,y()-15);
 
     Border_Health_bar.setRect(QRect(0,0,size_w, 7));
-    Border_Health_bar.setPos(x(),y()-16);
+    Border_Health_bar.setLoc(x(),y()-16);
 }
 
 void Character::init(){
@@ -36,15 +41,20 @@ void Character::init(){
     Health_bar.setZValue(6);
 }
 
-void Character::update(int frame)
+void Character::updateFrame(int frame)
 {
-    float w = boundingRect().width();
+    if (toBeDeleted)
+        delete this;
+    else
+    {
+        float w = boundingRect().width();
 
-    Health_bar.setRect(QRect(0,0,GetHealth(),5));
-    Health_bar.setPos(x()+1,y()-15);
+        Health_bar.setRect(QRect(0,0,GetHealth(),5));
+        Health_bar.setLoc(x()+1,y()-15);
 
-    Border_Health_bar.setRect(QRect(0,0,w, 7));
-    Border_Health_bar.setPos(x(),y()-16);
+        Border_Health_bar.setRect(QRect(0,0,w, 7));
+        Border_Health_bar.setLoc(x(),y()-16);
+    }
 }
 
 int Character::Health()
@@ -112,16 +122,28 @@ int Character::checkStep(direction d)
     case LEFT:
         Check = new QGraphicsRectItem(x() - 20, y() + h/4, 20, h/2);
         break;
+    case NONE:
+        Check = new QGraphicsRectItem(x(), y(), 50, 50);
+        break;
     }
     scene()->addItem(Check);
     QList<QGraphicsItem *> colliding_Check = Check->collidingItems();
+    GameItem* giptr;
 
     for (int i = 0, n = colliding_Check.size(); i < n; ++i)
     {
+        giptr = dynamic_cast<GameItem*>(colliding_Check[i]);
         if (typeid(*(colliding_Check[i])) == typeid(Wall))
         {
             wallptr = qgraphicsitem_cast<Wall*>(colliding_Check[i]);
             collision = wallptr->value;
+            break;
+        } else if (giptr && giptr->effect && isPlayer)
+        {
+            collision = 100+giptr->itype;
+            giptr->effect = false;
+            if (giptr->itype == PotHealth)
+                delete giptr;
             break;
         } else if (typeid(*(colliding_Check[i])) == typeid(Door))
         {
@@ -146,16 +168,16 @@ void Character::Move(direction d)
     switch(d)
     {
     case UP:
-        setPos(x(),y()-Speed());
+        setLoc(x(),y()-Speed());
         break;
     case DOWN:
-        setPos(x(),y()+Speed());
+        setLoc(x(),y()+Speed());
         break;
     case RIGHT:
-        setPos(x()+Speed(),y());
+        setLoc(x()+Speed(),y());
         break;
     case LEFT:
-        setPos(x()-Speed(),y());
+        setLoc(x()-Speed(),y());
         break;
     }
 }
@@ -184,7 +206,7 @@ void Character::Shoot(bool isPlayer)
 
     scene()->addItem(b);
     connect(b, SIGNAL(removeBullet()), this, SLOT(decrementBullets()));
-    connect(this, SIGNAL(ClearBullets()), b, SLOT(deleteBullet()));
+    connect(this, SIGNAL(ClearBullets(bool)), b, SLOT(deleteBullet(bool)));
     BulletsCount++;
 }
 
@@ -197,13 +219,16 @@ void Character::increaseHealth(int h)
 {
     if (health + h <= Maxhealth)
         health += h;
+    else
+        health = Maxhealth;
 }
 
 void Character::decreaseHealth(int h)
 {
     health -= h;
     if (health <= 0)
-        delete this;
+        toBeDeleted = true;
+//        delete this;
 }
 
 Character::~Character()

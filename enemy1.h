@@ -9,7 +9,7 @@ private:
     QVector<QPixmap> as[4];
 public:
     Enemy1(int x_pos, int y_pos, int r);
-    void update(int frame);
+    void updateFrame(int frame);
 };
 
 #endif // ENEMY1_H

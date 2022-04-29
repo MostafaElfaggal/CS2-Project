@@ -4,8 +4,8 @@ Enemy::Enemy(int x_pos, int y_pos, QString img_file, int health, int power, int 
 {
 }
 
-void Enemy::update(int frame){
-    Character::update(frame);
+void Enemy::updateFrame(int frame){
+    Character::updateFrame(frame);
 }
 
 Enemy::~Enemy()

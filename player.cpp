@@ -1,6 +1,7 @@
 #include "player.h"
 #include "wall.h"
 #include "bullet.h"
+#include "gameitem.h"
 
 #include <QDebug>
 
@@ -22,6 +23,8 @@ Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "PlayerE_
     toMove = 4;
 
     isExplode = false;
+
+    isPlayer = true;
 }
 
 void Player::keyPressEvent(QKeyEvent *event)
@@ -59,6 +62,16 @@ void Player::keyPressEvent(QKeyEvent *event)
 
     if (check < 0 || check == 9)
         toMove = 4;
+    else if (check >= 100)
+    {
+        check -= 100;
+        if (check==PotHealth)
+            increaseHealth(50);
+        else if (check==ThunderStrike)
+            decreaseHealth(30);
+        else if (check==FlameWisp)
+            decreaseHealth(5);
+    }
     else if (check > 0)
     {
         callSwitchView(check-1);
@@ -67,11 +80,8 @@ void Player::keyPressEvent(QKeyEvent *event)
 
 void Player::increaseHealth(int h)
 {
-    if (health+h <= Maxhealth)
-    {
-        changeHealth((health+h)*100/Maxhealth);
-        Character::increaseHealth(h);
-    }
+    changeHealth((health+h)*100/Maxhealth);
+    Character::increaseHealth(h);
 }
 
 void Player::decreaseHealth(int h)
@@ -81,8 +91,20 @@ void Player::decreaseHealth(int h)
 }
 
 
-void Player::update(int frame)
+void Player::updateFrame(int frame)
 {
+    int check = checkStep(NONE);
+    if (check >= 100)
+    {
+        check -= 100;
+        if (check==PotHealth)
+            increaseHealth(50);
+        else if (check==ThunderStrike)
+            decreaseHealth(30);
+        else if (check==FlameWisp)
+            decreaseHealth(5);
+    }
+
     if (frame % 3 == 0)
     {
         animations = &as[dir];
@@ -98,7 +120,7 @@ void Player::update(int frame)
         increaseHealth(5);
 
 
-    Character::update(frame);
+    Character::updateFrame(frame);
 }
 
 Player::~Player()

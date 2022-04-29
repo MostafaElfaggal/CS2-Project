@@ -24,11 +24,11 @@ public:
     Bullet(int x_pos, int y_pos, int p, direction d, bool isPlayer);
     void Move(); // moves speed pixels in the direction dir, after movement checks for collision
     bool checkCollision(); // checks for collision on other objects and returns bool
-    void update(int frame);
+    void updateFrame(int frame);
     ~Bullet();
 
 public slots:
-    void deleteBullet();
+    void deleteBullet(bool isShooterDying);
 
 signals:
     void removeBullet();

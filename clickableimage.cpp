@@ -2,6 +2,8 @@
 
 ClickableImage::ClickableImage(float x_pos, float y_pos, QString normal, QString hover, QString pressed, int size_w, int size_h, QGraphicsItem *parent) : QGraphicsPixmapItem(parent), normal_img(normal), hover_img(hover), pressed_img(pressed)
 {
+    prepareGeometryChange();
+
     normal_img.scaledToWidth(size_w);
     normal_img.scaledToHeight(size_h);
 
@@ -12,9 +14,11 @@ ClickableImage::ClickableImage(float x_pos, float y_pos, QString normal, QString
     pressed_img.scaledToHeight(size_h);
 
     setPixmap(normal_img);
-    setPos(x_pos, y_pos);
+    setLoc(x_pos, y_pos);
 
     setAcceptHoverEvents(true);
+
+    setZValue(10);
 }
 
 void ClickableImage::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -36,4 +40,10 @@ void ClickableImage::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void ClickableImage::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     setPixmap(normal_img);
+}
+
+void ClickableImage::setLoc(float x_pos, float y_pos)
+{
+    prepareGeometryChange();
+    setPos(x_pos, y_pos);
 }

@@ -24,6 +24,8 @@ public:
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 
+    void setLoc(float x_pos, float y_pos);
+
 signals:
     void clicked();
 };

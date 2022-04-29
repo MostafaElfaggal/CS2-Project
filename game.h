@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QObject>
+#include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
 #include <QMediaPlayer>
 #include <QAudioOutput>
@@ -11,8 +12,10 @@
 #include "gameobject.h"
 #include "player.h"
 #include "enemy.h"
+#include "boss.h"
 #include "explosion.h"
 #include "door.h"
+#include "healthpot.h"
 
 #include "clickableimage.h"
 #include "bar.h"
@@ -35,6 +38,7 @@ private:
     Door* doors[ROOM_COUNT][ROOM_COUNT];
 
     Player* p;
+    Boss* boss;
     int enemysPerRoom[ROOM_COUNT];
 
     QMediaPlayer* player;
@@ -52,6 +56,7 @@ private:
 
     QGraphicsView* view;
     float viewOffset[2];
+    QGraphicsPixmapItem bg;
 
     int room(int x_pos, int y_pos);
 

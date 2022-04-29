@@ -1,16 +1,15 @@
 #ifndef EXPLOSION_H
 #define EXPLOSION_H
 
-#include "gameobject.h"
+#include "gameitem.h"
 
-class Explosion : public GameObject
+class Explosion : public GameItem
 {
 private:
     int current;
-    QVector<QPixmap> as;
 public:
     Explosion(float x_pos, float y_pos);
-    void update(int frame);
+    void updateFrame(int frame);
     ~Explosion();
 };
 
