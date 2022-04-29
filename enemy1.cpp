@@ -1,6 +1,6 @@
 #include "enemy1.h"
 
-Enemy1::Enemy1(int x_pos, int y_pos) : Enemy(x_pos, y_pos, "UndeadKingS_01.png")
+Enemy1::Enemy1(int x_pos, int y_pos, int r) : Enemy(x_pos, y_pos, "UndeadKingS_01.png", 100, 10, 25, r)
 {
     // define animations
     QString chars[4] = {"N", "S", "E", "W"};
@@ -31,14 +31,12 @@ void Enemy1::update(int frame)
         }
         setDir((direction)i);
         Move((direction)i);
-        if (rand() % 5 == 0)
-        {
-            Shoot(false);
-        }
     }
+    if (rand() % 25 == 0)
+        Shoot(false);
 
     if (frame%3 == 0)
-        animate(); // use the animate function every second which will auto scroll through the different animations
+        animate();
 
     Enemy::update(frame);
 }

@@ -2,8 +2,10 @@
 
 #include <QGraphicsScene>
 
-Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets) : GameObject(x_pos, y_pos, size_w, size_h, img_file), MaxBullets(maxBullets)
+Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets, int r) : GameObject(x_pos, y_pos, size_w, size_h, img_file, "character"), MaxBullets(maxBullets)
 {
+    MyRoom = r;
+
     health = Health;
     Maxhealth = Health;
     power = Power;
@@ -11,6 +13,9 @@ Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_f
     walkthrough = Walkthrough;
     dir = Dir;
 
+    isExplode = true;
+
+    BulletsCount = 0;
     canShoot = true;
 
     Health_bar.setBrush(QBrush(Qt::green));
@@ -21,25 +26,18 @@ Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_f
 
     Border_Health_bar.setRect(QRect(0,0,size_w, 7));
     Border_Health_bar.setPos(x(),y()-16);
-
-    bullets = new GameObject* [MaxBullets];
-    for (int i=0; i<MaxBullets; i++) {
-        *(bullets+i) = NULL;
-    }
 }
 
 void Character::init(){
     scene()->addItem(&Border_Health_bar);
     scene()->addItem(&Health_bar);
+    setZValue(4);
+    Border_Health_bar.setZValue(5);
+    Health_bar.setZValue(6);
 }
 
 void Character::update(int frame)
 {
-    for (int i=0; i<MaxBullets; i++) {
-        if (bullets[i] != NULL)
-            bullets[i]->update(frame);
-    }
-
     float w = boundingRect().width();
 
     Health_bar.setRect(QRect(0,0,GetHealth(),5));
@@ -103,16 +101,16 @@ int Character::checkStep(direction d)
 
     switch(d){
     case UP:
-        Check = new QGraphicsRectItem(x() + w/4, y() - 5, w/2, 5);
+        Check = new QGraphicsRectItem(x() + w/4, y() - 20, w/2, 20);
         break;
     case DOWN:
-        Check = new QGraphicsRectItem(x() + w/4, y() + h, w/2, 5);
+        Check = new QGraphicsRectItem(x() + w/4, y() + h, w/2, 20);
         break;
     case RIGHT:
-        Check = new QGraphicsRectItem(x() + w, y() + h/4, 5, h/2);
+        Check = new QGraphicsRectItem(x() + w, y() + h/4, 20, h/2);
         break;
     case LEFT:
-        Check = new QGraphicsRectItem(x() - 5, y() + h/4, 5, h/2);
+        Check = new QGraphicsRectItem(x() - 20, y() + h/4, 20, h/2);
         break;
     }
     scene()->addItem(Check);
@@ -124,6 +122,7 @@ int Character::checkStep(direction d)
         {
             wallptr = qgraphicsitem_cast<Wall*>(colliding_Check[i]);
             collision = wallptr->value;
+            break;
         } else if (typeid(*(colliding_Check[i])) == typeid(Door))
         {
             doorptr = qgraphicsitem_cast<Door*>(colliding_Check[i]);
@@ -132,7 +131,7 @@ int Character::checkStep(direction d)
                 if (!doorptr->open)
                     collision = 9;
                 else
-                    collision = (doorptr->from*10 + doorptr->to) + 1; // room number from 1 to 3
+                    collision = (doorptr->from*10 + doorptr->to) + 1; // room number from and to (1 to 3) combined with 10*from+to
             }
         }
     }
@@ -163,45 +162,30 @@ void Character::Move(direction d)
 
 void Character::Shoot(bool isPlayer)
 {
-    if (!canShoot)
+    if (!canShoot || BulletsCount >= MaxBullets)
         return;
-    int i = 0;
-    while (bullets[i] != NULL && i<MaxBullets)
-        i++;
-    if (bullets[i] == NULL && i<MaxBullets)
-    {
-        float w = boundingRect().width(), h=boundingRect().height();
-        switch(dir){
-        case UP:
-            bullets[i] = new Bullet(bullets[i], x()+w/2, y(), Power(), Dir(), isPlayer);
-            break;
-        case DOWN:
-            bullets[i] = new Bullet(bullets[i], x()+w/2, y()+h, Power(), Dir(), isPlayer);
-            break;
-        case RIGHT:
-            bullets[i] = new Bullet(bullets[i], x()+w, y()+h/2, Power(), Dir(), isPlayer);
-            break;
-        case LEFT:
-            bullets[i] = new Bullet(bullets[i], x(), y()+h/2, Power(), Dir(), isPlayer);
-            break;
-        }
-        scene()->addItem(bullets[i]);
-    }
-}
 
-void Character::ClearBullets(bool isShooterDying) // the isShooterDying is for future use
-{
-    Bullet* bulletptr;
-    for (int i=0; i<MaxBullets; i++){
-        bulletptr = qgraphicsitem_cast<Bullet*>(bullets[i]);
-        if (bullets[i] != NULL)
-        {
-        if (!bulletptr->inCollision)
-            delete bullets[i];
-        else if (isShooterDying)
-            bulletptr->isShooterAlive = false;
-        }
+    Bullet* b;
+    float w = boundingRect().width(), h=boundingRect().height();
+    switch(dir){
+    case UP:
+        b = new Bullet(x()+w/2, y(), Power(), Dir(), isPlayer);
+        break;
+    case DOWN:
+        b = new Bullet(x()+w/2, y()+h, Power(), Dir(), isPlayer);
+        break;
+    case RIGHT:
+        b = new Bullet(x()+w, y()+h/2, Power(), Dir(), isPlayer);
+        break;
+    case LEFT:
+        b = new Bullet(x(), y()+h/2, Power(), Dir(), isPlayer);
+        break;
     }
+
+    scene()->addItem(b);
+    connect(b, SIGNAL(removeBullet()), this, SLOT(decrementBullets()));
+    connect(this, SIGNAL(ClearBullets()), b, SLOT(deleteBullet()));
+    BulletsCount++;
 }
 
 void Character::blockBullets()
@@ -211,7 +195,8 @@ void Character::blockBullets()
 
 void Character::increaseHealth(int h)
 {
-    health += h;
+    if (health + h <= Maxhealth)
+        health += h;
 }
 
 void Character::decreaseHealth(int h)
@@ -223,8 +208,13 @@ void Character::decreaseHealth(int h)
 
 Character::~Character()
 {
-    blockBullets();
-    ClearBullets(true);
+    if (isExplode)
+        scene()->addItem(new Explosion(x(), y()));
     scene()->removeItem(this);
-    die();
+    die(MyRoom);
+}
+
+void Character::decrementBullets()
+{
+    BulletsCount--;
 }

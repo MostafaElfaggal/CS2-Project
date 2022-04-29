@@ -11,9 +11,11 @@
 #include "gameobject.h"
 #include "player.h"
 #include "enemy.h"
+#include "explosion.h"
 #include "door.h"
 
 #include "clickableimage.h"
+#include "bar.h"
 #include "winlose_status.h"
 
 #include <QTimer>
@@ -29,11 +31,10 @@ private:
 
     int currentRoom;
     QVector<GameObject*> rooms[ROOM_COUNT];
-    int PXstart[ROOM_COUNT], PYstart[ROOM_COUNT], PXend[ROOM_COUNT], PYend[ROOM_COUNT];
+    int Pstart[2];
     Door* doors[ROOM_COUNT][ROOM_COUNT];
 
     Player* p;
-    QVector<Enemy*> enemys[ROOM_COUNT];
     int enemysPerRoom[ROOM_COUNT];
 
     QMediaPlayer* player;
@@ -47,6 +48,7 @@ private:
     WinLose_Status status;
 
     ClickableImage pauseButton;
+    bar HealthBar;
 
     QGraphicsView* view;
     float viewOffset[2];
@@ -57,7 +59,6 @@ public:
     Game(QGraphicsView* v);
     void init();
     void loadWorld();
-    void loadRoom(int room, int boarddata[BOARD_SIZE_H][BOARD_SIZE_W], int offsetX, int offsetY);
     ~Game();
 public slots:
     void start();
@@ -73,9 +74,12 @@ public slots:
     void Lose();
 
     void switchRoom(int newRoom);
-    void decrementEnemy();
+    void decrementEnemy(int);
+    void playerHealthChanged(float);
+
 signals:
     void showPauseMenu(float , float);
     void hidePauseMenu();
+    void updatePlayerHealth(float);
 };
 #endif // GAME_H

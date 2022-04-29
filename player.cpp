@@ -4,7 +4,7 @@
 
 #include <QDebug>
 
-Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "PlayerE_01.png", 100, 10, 25, false, RIGHT, 2)
+Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "PlayerE_01.png", 100, 10, 25, false, RIGHT, 1000, 0)
 {
     // define animations
     QString chars[4] = {"N", "S", "E", "W"};
@@ -20,6 +20,8 @@ Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "PlayerE_
 
     setFlag(QGraphicsItem::ItemIsFocusable);
     toMove = 4;
+
+    isExplode = false;
 }
 
 void Player::keyPressEvent(QKeyEvent *event)
@@ -63,9 +65,24 @@ void Player::keyPressEvent(QKeyEvent *event)
     }
 }
 
+void Player::increaseHealth(int h)
+{
+    if (health+h <= Maxhealth)
+    {
+        changeHealth((health+h)*100/Maxhealth);
+        Character::increaseHealth(h);
+    }
+}
+
+void Player::decreaseHealth(int h)
+{
+    changeHealth((health-h)*100/Maxhealth);
+    Character::decreaseHealth(h);
+}
+
+
 void Player::update(int frame)
 {
-//    if (frame%3 == 0)
     if (frame % 3 == 0)
     {
         animations = &as[dir];
@@ -76,6 +93,9 @@ void Player::update(int frame)
         toMove = 4;
         animate();
     }
+
+    if (frame%150 == 0)
+        increaseHealth(5);
 
 
     Character::update(frame);

@@ -4,8 +4,6 @@
 #include <QObject>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneEvent>
-//#include <QGraphicsSceneMouseEvent>
-//#include <QGraphicsSceneHoverEvent>
 
 
 class ClickableImage : public QObject, public QGraphicsPixmapItem

@@ -14,6 +14,8 @@ public:
     Player(int x_pos, int y_pos);
 
     void keyPressEvent(QKeyEvent *event);
+    void increaseHealth(int h);
+    void decreaseHealth(int h);
     void update(int frame);
 
     ~Player();
@@ -21,8 +23,9 @@ public:
 
 signals:
     void callSwitchView(int);
+    void changeHealth(float);
 
-// keyboard control slot (needs to integrate through update)
+// keyboard control slot
 };
 
 #endif // PLAYER_H

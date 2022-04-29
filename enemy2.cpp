@@ -1,6 +1,6 @@
 #include "enemy2.h"
 
-Enemy2::Enemy2(int x_pos, int y_pos) : Enemy(x_pos, y_pos, "flyingS_01.png")
+Enemy2::Enemy2(int x_pos, int y_pos, int r) : Enemy(x_pos, y_pos, "flyingS_01.png", 100, 10, 25, r)
 {
 //    for (int i=0; i<9; i++)
 //    {
@@ -46,13 +46,13 @@ void Enemy2::update(int frame)
         }
             setDir((direction)i);
             Move((direction)i);
-            if (rand()%10 == 0) {
-                Shoot(false);
-            }
     }
 
+    if (rand()%25 == 0)
+        Shoot(false);
+
     if (frame%3 == 0)
-        animate(); // use the animate function every second which will auto scroll through the different animations
+        animate();
 
     Enemy::update(frame);
 }

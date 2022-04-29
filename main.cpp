@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
     view.setBackgroundBrush(QBrush(Qt::black));
 
     view.setScene(&scene);
-//    view.setSceneRect(0, 1350, 1300, 750);
     view.setSceneRect(0, 1350, 1300, 750);
 
 //    MainWindow w(&view);

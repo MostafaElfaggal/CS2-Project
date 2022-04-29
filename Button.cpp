@@ -9,11 +9,13 @@ Button::Button(QString name, int size_w, int size_h, QGraphicsItem *parent):QGra
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(Qt::darkCyan);
     setBrush(brush);
+    setZValue(11);
 
     text = new QGraphicsTextItem(name,this);
     int xpos=rect().width()/2 - text->boundingRect().width()/2;
     int ypos=rect().height()/2 - text->boundingRect().height()/2;
     text->setPos(xpos,ypos);
+    text->setZValue(12);
 
     setAcceptHoverEvents(true);
 }

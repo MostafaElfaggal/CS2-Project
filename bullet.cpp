@@ -6,8 +6,9 @@
 #include "player.h"
 #include "enemy1.h"
 #include "enemy2.h"
+#include "boss.h"
 
-Bullet::Bullet(GameObject *&s, int x_pos, int y_pos, int p, direction d, bool isPlayer) : GameObject(x_pos, y_pos, 25, 25, "fireBall1.png")
+Bullet::Bullet(int x_pos, int y_pos, int p, direction d, bool isPlayer) : GameObject(x_pos, y_pos, 25, 25, "fireBall1.png", "bullet")
 {
     // define animations
     for (int i=0; i<4; i++)
@@ -46,7 +47,7 @@ Bullet::Bullet(GameObject *&s, int x_pos, int y_pos, int p, direction d, bool is
         break;
     }
 
-    self = &s;
+    setZValue(7);
 }
 
 void Bullet::Move()
@@ -66,28 +67,34 @@ void Bullet::Move()
         setPos(x() - speed, y());
         break;
     }
-    //    if (!scene()->sceneRect().contains(boundingRect())) scene()->removeItem(this);
+
     // collision
-
     if (checkCollision() == true) // collision
-    {
         delete this;
-
-    }
 }
 
 bool Bullet::checkCollision()
 {
     QList<QGraphicsItem *> colliding_items = collidingItems();
     Character* creature;
+    Door* d;
 
     for (int i = 0, n = colliding_items.size(); i < n; ++i)
     {
-        if (typeid(*(colliding_items[i])) == typeid(Wall) || typeid(*(colliding_items[i])) == typeid(Door))
+        if (typeid(*(colliding_items[i])) == typeid(Door))
+        {
+            d = qgraphicsitem_cast<Door*>(colliding_items[i]);
+            if (!d->open)
+            {
+                inCollision = true;
+                return true;
+            }
+        }
+        else if (typeid(*(colliding_items[i])) == typeid(Wall))
         {
             inCollision = true;
             return true;
-        } else if (typeid(*(colliding_items[i])) == typeid(Enemy1) || typeid(*(colliding_items[i])) == typeid(Enemy2))
+        } else if (typeid(*(colliding_items[i])) == typeid(Enemy1) || typeid(*(colliding_items[i])) == typeid(Enemy2) || typeid(*(colliding_items[i])) == typeid(Boss))
         {
             inCollision = true;
             creature = qgraphicsitem_cast<Character*>(colliding_items[i]);
@@ -112,7 +119,7 @@ bool Bullet::checkCollision()
 void Bullet::update(int frame)
 {
     if (frame%2 == 0) {
-        animate(); // use the animate function every second which will auto scroll through the different animations
+        animate();
     }
 
     Move();
@@ -122,5 +129,12 @@ Bullet::~Bullet()
 {
     scene()->removeItem(this);
     if (isShooterAlive)
-        *self = NULL;
+        removeBullet();
+}
+
+void Bullet::deleteBullet()
+{
+    isShooterAlive = false;
+    if (!inCollision)
+        delete this;
 }

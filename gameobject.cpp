@@ -1,9 +1,18 @@
 #include "gameobject.h"
 
-GameObject::GameObject(float x_pos, float y_pos, int size_w, int size_h, QString img_file)
+GameObject::GameObject(float x_pos, float y_pos, int size_w, int size_h, QString img_file, QString item)
 {
     setImage(size_w, size_h, img_file);
     setPos(x_pos, y_pos);
+
+    setZValue(0);
+
+    itm = item;
+}
+
+void GameObject::init()
+{
+
 }
 
 void GameObject::setImage(int size_w, int size_h, QString img_file)

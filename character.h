@@ -3,6 +3,7 @@
 
 #include "gameobject.h"
 #include "bullet.h"
+#include "explosion.h"
 
 #include "wall.h"
 #include "block.h"
@@ -12,8 +13,8 @@ class Character : public GameObject
 {
     Q_OBJECT
 private:
-    int health;
-    int Maxhealth;
+    int MyRoom;
+
     int power;
     int speed;
     bool walkthrough;
@@ -24,12 +25,17 @@ private:
     QGraphicsRectItem Border_Health_bar;
 
     const int MaxBullets;
-    GameObject **bullets;
+    int BulletsCount;
+//    GameObject **bullets;
 
 public:
+    int health;
+    int Maxhealth;
     direction dir;
 
-    Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets);
+    bool isExplode;
+
+    Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets, int r);
     void init();
 
     virtual void update(int frame); // virtual to be discussed
@@ -48,14 +54,18 @@ public:
     void Move(direction d); // moves speed pixels in the direction of dir (checks for obstackle collision if walkthrough is false using checkStep function)
 
     void Shoot(bool isPlayer); // shoots a bullet in the direction of dir
-    void ClearBullets(bool isShooterDying);
     void blockBullets();
-    void increaseHealth(int h);
-    void decreaseHealth(int h);
+    virtual void increaseHealth(int h);
+    virtual void decreaseHealth(int h);
 
     ~Character();
+
+public slots:
+    void decrementBullets();
+
 signals:
-    void die();
+    void ClearBullets();
+    void die(int);
 };
 
 #endif // CHARACTER_H

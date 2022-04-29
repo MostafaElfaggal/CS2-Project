@@ -10,7 +10,9 @@ CONFIG += c++11
 
 SOURCES += \
     Button.cpp \
+    bar.cpp \
     block.cpp \
+    boss.cpp \
     bullet.cpp \
     character.cpp \
     clickableimage.cpp \
@@ -18,6 +20,7 @@ SOURCES += \
     enemy.cpp \
     enemy1.cpp \
     enemy2.cpp \
+    explosion.cpp \
     game.cpp \
     gameobject.cpp \
     main.cpp \
@@ -31,7 +34,9 @@ SOURCES += \
 
 HEADERS += \
     Button.h \
+    bar.h \
     block.h \
+    boss.h \
     bullet.h \
     character.h \
     clickableimage.h \
@@ -39,6 +44,7 @@ HEADERS += \
     enemy.h \
     enemy1.h \
     enemy2.h \
+    explosion.h \
     game.h \
     gameobject.h \
     mainmenu.h \

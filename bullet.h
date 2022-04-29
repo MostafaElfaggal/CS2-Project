@@ -6,6 +6,7 @@
 
 class Bullet : public GameObject
 {
+    Q_OBJECT
 private:
     QVector<QPixmap> a1;
 
@@ -20,11 +21,17 @@ public:
     bool inCollision;
     bool isShooterAlive;
 
-    Bullet(GameObject* &self, int x_pos, int y_pos, int p, direction d, bool isPlayer);
+    Bullet(int x_pos, int y_pos, int p, direction d, bool isPlayer);
     void Move(); // moves speed pixels in the direction dir, after movement checks for collision
     bool checkCollision(); // checks for collision on other objects and returns bool
     void update(int frame);
     ~Bullet();
+
+public slots:
+    void deleteBullet();
+
+signals:
+    void removeBullet();
 };
 
 #endif // BULLET_H

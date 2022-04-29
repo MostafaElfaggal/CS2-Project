@@ -13,6 +13,8 @@ Menu::Menu(Game* g, int size_w, int size_h) : QGraphicsRectItem(QRect(0,0,size_w
 
     setBrush(QBrush(Qt::blue));
 
+    setZValue(10);
+
     musicOn();
 }
 
@@ -25,6 +27,7 @@ void Menu::displaymenu(int x_pos, int y_pos)
     int txPos = x() + w/2 - titleText->boundingRect().width()/2;
     int tyPos = y()+h/5;
     titleText->setPos(txPos,tyPos);
+    titleText->setZValue(11);
 
     int bxPos = x() + w/2 - playButton->boundingRect().width()/2;
     int byPos = y()+h/2;

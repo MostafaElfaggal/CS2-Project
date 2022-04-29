@@ -8,7 +8,7 @@ class Enemy2 : public Enemy
 private:
     QVector<QPixmap> as[4];
 public:
-    Enemy2(int x_pos, int y_pos);
+    Enemy2(int x_pos, int y_pos, int r);
     void update(int frame);
 };
 
