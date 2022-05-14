@@ -26,8 +26,8 @@ int main(int argc, char *argv[])
     view.setScene(&scene);
     view.setSceneRect(0, 1350, 1300, 750);
 
-//    MainWindow w(&view);
-//    w.show();
+    MainWindow w(&view);
+    w.show();
 
     Game g(&view);
     scene.addItem(&g);
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     m2.init(0, 0, "Resume Game");
     m2.Hide();
 
-    view.show();
+//    view.show();
 
     return a.exec();
 }

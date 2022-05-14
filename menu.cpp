@@ -50,7 +50,7 @@ void Menu::displaymenu(int x_pos, int y_pos)
 
 void Menu::init(int x_pos, int y_pos, QString btn1_msg)
 {
-    titleText = new QGraphicsTextItem(QString("Game Name"));
+    titleText = new QGraphicsTextItem(QString("Grimscape"));
     QFont titleFont("Times New Roman",25);
     titleText->setFont(titleFont);
     scene()->addItem(titleText);
