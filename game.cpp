@@ -59,6 +59,7 @@ int Game::adjust_to_borders(int i, int di)
 Game::Game(QGraphicsView *v) : QGraphicsRectItem(QRect(0, 0, 1, 1)), pauseButton(25, 25, "pauseBtn.png", "pauseBtn-hover", "pauseBtn-pressed.png", 50, 50), HealthBar("health_bar", 50, 635), shield_icon(50+316+50, 650)
 {
     p = new Player(0, 0);
+    boss_died = false;
 
     player = new QMediaPlayer;
     audioOutput = new QAudioOutput;
@@ -98,6 +99,8 @@ void Game::init()
     connect(p, SIGNAL(die(int)), this, SLOT(Lose()));
 //    connect(p, SIGNAL(changeHealth(float)), this, SLOT(playerHealthChanged(float)));
     /////////////////////////////////////////////////////////////////////////////////////////
+
+    connect(boss, SIGNAL(boss_dying()), this, SLOT(handleBossDeath()));
 
     scene()->addItem(&status);
     status.init();
@@ -615,7 +618,8 @@ void Game::decrementEnemy(int r)
     enemysPerRoom[r]--;
     if (enemysPerRoom[r] <= 0)
     {
-        if (currentRoom == 3) // to be fixed
+//        if (currentRoom == 3) // to be fixed
+        if (boss_died)
             Win();
         else
         {
@@ -623,6 +627,11 @@ void Game::decrementEnemy(int r)
             doors[r+1][r]->unlock();
         }
     }
+}
+
+void Game::handleBossDeath()
+{
+    boss_died = true;
 }
 
 void Game::playerHealthChanged(float h)

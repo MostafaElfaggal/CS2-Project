@@ -36,7 +36,6 @@ void Boss::updateFrame(long long frame)
 //        int x_next, y_next;
 //        g->shortestPath(x_next, y_next);
         int i=0;
-        qDebug() << x_next << " " << y_next;
 
         if (!(x_next == loc[0] && y_next == loc[1])) // standing on player
         {
@@ -50,7 +49,7 @@ void Boss::updateFrame(long long frame)
             i = 3;
 
         int c = checkStep((direction)i);
-        if (!(c!=0 && c<100))
+        if (c>=0 && c!=9)
         {
             setDir((direction)i);
             Move((direction)i);
@@ -64,4 +63,8 @@ void Boss::updateFrame(long long frame)
         animate();
 
     Enemy::updateFrame(frame);
+}
+
+Boss::~Boss() {
+    boss_dying();
 }

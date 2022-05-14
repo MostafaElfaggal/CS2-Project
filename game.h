@@ -53,6 +53,7 @@ private:
     QTimer* timer;
 
     WinLose_Status status;
+    bool boss_died;
 
     ClickableImage pauseButton;
     bar HealthBar;
@@ -90,6 +91,7 @@ public slots:
 
     void switchRoom(int newRoom);
     void decrementEnemy(int);
+    void handleBossDeath();
     void playerHealthChanged(float);
 
 signals:
