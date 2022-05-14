@@ -1,6 +1,6 @@
 #include "pausemenu.h"
 
-PauseMenu::PauseMenu(Game* g) : Menu(g, 400, 400)
+PauseMenu::PauseMenu(Game* g) : Menu(g, 400, 540)
 {
     connect(g,SIGNAL(showPauseMenu(float, float)),this,SLOT(Show(float, float)));
     connect(g,SIGNAL(hidePauseMenu()),this,SLOT(Hide()));
@@ -15,10 +15,11 @@ void PauseMenu::btn1()
 
 void PauseMenu::Show(float x_pos, float y_pos)
 {
+    playButton->setImage("Resume Button Normal.png", "Resume Button Hover.png", "Resume Button Clicked.png", 250, 100);
     if (isMusicRunning)
-        musicButton->setText(QString("Music: ON"));
+        musicButton->setImage("Music On Button Normal.png", "Music On Button Hover.png", "Music On Button Clicked.png", 250, 100);
     else
-        musicButton->setText(QString("Music: OFF"));
+        musicButton->setImage("Music Off Button Normal.png", "Music Off Button Hover.png", "Music Off Button Clicked.png", 250, 100);
 
     displaymenu(x_pos, y_pos);
 

@@ -464,7 +464,7 @@ void Game::pauseMenu()
         return;
 
     pause();
-    showPauseMenu(1350/2+viewOffset[0]-400/2, 750/2+viewOffset[1]-400/2);
+    showPauseMenu(1350/2+viewOffset[0]-540/2, 750/2+viewOffset[1]-400/2);
 }
 
 void Game::pause()

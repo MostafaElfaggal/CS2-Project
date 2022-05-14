@@ -6,8 +6,12 @@
 class MainMenu : public Menu
 {
     Q_OBJECT
+private:
+    QGraphicsPixmapItem bg;
+
 public:
     MainMenu(Game* g);
+    void background();
 
 public slots:
     void btn1();

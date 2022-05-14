@@ -19,6 +19,7 @@ public:
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
     void setLoc(float x_pos, float y_pos);
+    void setImage(QString img_normal, QString img_hover, QString img_pressed, int size_w, int size_h);
 
 signals:
     void press();

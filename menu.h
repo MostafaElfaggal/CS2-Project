@@ -4,6 +4,7 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 
+#include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -11,9 +12,10 @@
 
 #include "game.h"
 #include "Button.h"
+#include "clickableimage.h"
 
 
-class Menu : public QObject , public QGraphicsRectItem
+class Menu : public QObject , public QGraphicsPixmapItem
 {
     Q_OBJECT
 private:
@@ -22,9 +24,9 @@ private:
 
 protected:
     QGraphicsTextItem* titleText;
-    Button* playButton;
-    Button* quitButton;
-    Button* musicButton;
+    ClickableImage* playButton;
+    ClickableImage* quitButton;
+    ClickableImage* musicButton;
 
 public:
     static bool isMusicRunning;

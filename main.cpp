@@ -35,7 +35,8 @@ int main(int argc, char *argv[])
 
     MainMenu m(&g);
     scene.addItem(&m);
-    m.init(1300/2-500/2, (1350+750/2)-500/2, "Start Game");
+    m.background();
+    m.init(1300/2-551/2, (1350+750/2)-744/2, "Start Game");
 
     PauseMenu m2(&g);
     scene.addItem(&m2);
