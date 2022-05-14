@@ -5,7 +5,7 @@
 
 #include <QDebug>
 
-Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "PlayerE_01.png", 100, 10, 25, false, RIGHT, 1000, 0)
+Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "PlayerE_01.png", 100, 10, 50, false, RIGHT, 1000, 0)
 {
     // define animations
     QString chars[4] = {"N", "S", "E", "W"};

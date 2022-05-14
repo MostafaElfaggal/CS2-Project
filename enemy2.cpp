@@ -1,6 +1,6 @@
 #include "enemy2.h"
 
-Enemy2::Enemy2(int x_pos, int y_pos, int r, QString enemyImg, int imgFrames) : Enemy(x_pos, y_pos, enemyImg+"S_01.png", 100, 10, 25, r)
+Enemy2::Enemy2(int x_pos, int y_pos, int r, QString enemyImg, int imgFrames, int x_loc, int y_loc) : Enemy(x_pos, y_pos, enemyImg+"S_01.png", 100, 10, 50, r, x_loc, y_loc)
 {
 //    for (int i=0; i<9; i++)
 //    {

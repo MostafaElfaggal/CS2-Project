@@ -2,12 +2,14 @@
 
 #include <QGraphicsScene>
 
-Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets, int r) : GameObject(x_pos, y_pos, size_w, size_h, img_file, "character"), MaxBullets(maxBullets)
+Character::Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets, int r, int x_loc, int y_loc) : GameObject(x_pos, y_pos, size_w, size_h, img_file, "character"), MaxBullets(maxBullets)
 {
 
     isPlayer = false;
 
     MyRoom = r;
+    loc[0] = x_loc;
+    loc[1] = y_loc;
 
     health = Health;
     Maxhealth = Health;
@@ -170,15 +172,19 @@ void Character::Move(direction d)
     switch(d)
     {
     case UP:
+        loc[1] -= 1;
         setLoc(x(),y()-Speed());
         break;
     case DOWN:
+        loc[1] += 1;
         setLoc(x(),y()+Speed());
         break;
     case RIGHT:
+        loc[0] += 1;
         setLoc(x()+Speed(),y());
         break;
     case LEFT:
+        loc[0] -= 1;
         setLoc(x()-Speed(),y());
         break;
     }

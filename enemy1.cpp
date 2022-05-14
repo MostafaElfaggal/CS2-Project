@@ -1,6 +1,6 @@
 #include "enemy1.h"
 
-Enemy1::Enemy1(int x_pos, int y_pos, int r, QString enemyImg, int imgFrames) : Enemy(x_pos, y_pos, enemyImg+"S_01.png", 100, 10, 25, r)
+Enemy1::Enemy1(int x_pos, int y_pos, int r, QString enemyImg, int imgFrames, int x_loc, int y_loc) : Enemy(x_pos, y_pos, enemyImg+"S_01.png", 100, 10, 50, r, x_loc, y_loc)
 {
     // define animations
     QString chars[4] = {"N", "S", "E", "W"};

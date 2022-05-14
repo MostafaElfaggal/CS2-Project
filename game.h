@@ -38,6 +38,7 @@ private:
     int currentRoom;
     QVector<GameObject*> rooms[ROOM_COUNT];
     int Pstart[2];
+    int Ploc[2];
     Door* doors[ROOM_COUNT][ROOM_COUNT];
 
     Player* p;
@@ -62,6 +63,7 @@ private:
     QGraphicsPixmapItem bg;
 
     int room(int x_pos, int y_pos);
+    int adjust_to_borders(int i, int di);
 
 public:
     static int frame;
@@ -69,6 +71,9 @@ public:
     Game(QGraphicsView* v);
     void init();
     void loadWorld();
+
+    void shortestPath();
+
     ~Game();
 public slots:
     void start();

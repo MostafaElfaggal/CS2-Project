@@ -8,7 +8,9 @@ class Boss : public Enemy
 private:
     QVector<QPixmap> as;
 public:
-    Boss(float x_pos, float y_pos, int r);
+    int x_next, y_next;
+
+    Boss(float x_pos, float y_pos, int r, int x_loc, int y_loc);
     void updateFrame(long long frame);
 };
 

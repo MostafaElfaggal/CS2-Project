@@ -45,6 +45,17 @@ int Game::room(int x_pos, int y_pos)
     return res;
 }
 
+int Game::adjust_to_borders(int i, int di)
+{
+    if (i+di >= 0 && i+di <=22)
+        i += di;
+
+    return i;
+
+//    if (j+dj >= 0 && j+dj <= 22)
+//        j+= dj;
+}
+
 Game::Game(QGraphicsView *v) : QGraphicsRectItem(QRect(0, 0, 1, 1)), pauseButton(25, 25, "pauseBtn.png", "pauseBtn-hover", "pauseBtn-pressed.png", 50, 50), HealthBar("health_bar", 50, 635), shield_icon(50+316+50, 650)
 {
     p = new Player(0, 0);
@@ -79,6 +90,8 @@ void Game::init()
 
     ///////////////////////////////////////////////////////////////////////////////////////// PLAYER
     p->setLoc(Pstart[0], Pstart[1]);
+    p->loc[0] = Ploc[0];
+    p->loc[1] = Ploc[1];
     scene()->addItem(p);
     p->init();
     p->setPtrs(&shield_icon);
@@ -135,6 +148,9 @@ void Game::loadWorld()
 
                 Pstart[0] = offsetX + 50 * j;
                 Pstart[1] = offsetY + 50 * i;
+                //
+                Ploc[0] = j;
+                Ploc[1] = i;
             }
             else if (temp[0] == 'e')
             { // enemy1
@@ -143,19 +159,19 @@ void Game::loadWorld()
 
                 if (temp == "eS")
                 {
-                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "Skeleton", 3);
+                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "Skeleton", 3, j, i);
                 } else if (temp == "eU")
                 {
-                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "UndeadKing", 3);
+                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "UndeadKing", 3, j, i);
                 } else if (temp == "ef")
                 {
-                    tmp = new Enemy2(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "flying", 4);
+                    tmp = new Enemy2(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "flying", 4, j, i);
                 } else if (temp == "ec")
                 {
-                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "catBoss", 3);
+                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "catBoss", 3, j, i);
                 } else if (temp == "eB")
                 {
-                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "BlackKnight", 3);
+                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "BlackKnight", 3, j, i);
                 }
                 enemysPerRoom[room(j, i)]++;
 
@@ -176,7 +192,7 @@ void Game::loadWorld()
             else if (temp == "bs")
             {
                 boarddata[i][j] = 1;
-                boss = new Boss(offsetX + 50 * j, offsetY + 50 * i, room(j,i));
+                boss = new Boss(offsetX + 50 * j, offsetY + 50 * i, room(j,i), j, i);
                 enemysPerRoom[room(j, i)]++;
 
                 scene()->addItem(boss);
@@ -263,6 +279,105 @@ void Game::loadWorld()
     file.close();
 }
 
+void Game::shortestPath()
+{
+    int g_table[BOARD_SIZE_H][BOARD_SIZE_W], prev[BOARD_SIZE_H][BOARD_SIZE_W][2];
+    bool visited[BOARD_SIZE_H][BOARD_SIZE_W];
+
+    for (int i=0; i<BOARD_SIZE_H; i++)
+        for (int j=0; j<BOARD_SIZE_W; j++)
+        {
+        g_table[i][j] = -1;
+        visited[i][j] = false;
+        prev[i][j][0] = -1;
+        prev[i][j][1] = -1;
+        }
+
+    int x_source = boss->loc[0];
+    int y_source = boss->loc[1];
+
+    int x_destination = p->loc[0];
+    int y_destination = p->loc[1];
+
+    if (x_destination == x_source && y_destination == y_source)
+    {
+        boss->x_next = x_source;
+        boss->y_next = y_source;
+        return;
+    }
+
+    g_table[y_source][x_source] = 0;
+
+    int min_i=y_source, min_j=x_source;
+
+    while(!visited[y_destination][x_destination])
+    {
+        for (int i=0; i<BOARD_SIZE_H; i++) // find minimum f to traverse
+            for (int j=0; j<BOARD_SIZE_W; j++)
+                if (!visited[i][j] && g_table[i][j] != -1 && (g_table[i][j]+abs(y_destination-i)+abs(x_destination-j) <= g_table[min_i][min_j]+abs(y_destination-min_i)+abs(x_destination-min_j) || visited[min_i][min_j]))
+                {
+                    min_i = i;
+                    min_j = j;
+                }
+
+        visited[min_i][min_j] = true;
+        int tmp_i, tmp_j;
+
+        // up
+        tmp_i = adjust_to_borders(min_i, -1);
+        tmp_j = min_j;
+        if (!visited[tmp_i][tmp_j] && (boarddata[tmp_i][tmp_j] > 0 || boarddata[tmp_i][tmp_j] == -3) && (g_table[tmp_i][tmp_j] > g_table[min_i][min_j]+1 || g_table[tmp_i][tmp_j] == -1)) // new node && not wall && more optimal
+        {
+            g_table[tmp_i][tmp_j] = g_table[min_i][min_j]+1; // weight distance one from any node to another neighbour
+            prev[tmp_i][tmp_j][0] = min_i;
+            prev[tmp_i][tmp_j][1] = min_j;
+        }
+
+        // down
+        tmp_i = adjust_to_borders(min_i, 1);
+        tmp_j = min_j;
+        if (!visited[tmp_i][tmp_j] && (boarddata[tmp_i][tmp_j] > 0 || boarddata[tmp_i][tmp_j] == -3) && (g_table[tmp_i][tmp_j] > g_table[min_i][min_j]+1 || g_table[tmp_i][tmp_j] == -1)) // new node && not wall && more optimal
+        {
+            g_table[tmp_i][tmp_j] = g_table[min_i][min_j]+1; // weight distance one from any node to another neighbour
+            prev[tmp_i][tmp_j][0] = min_i;
+            prev[tmp_i][tmp_j][1] = min_j;
+        }
+
+        // right
+        tmp_i = min_i;
+        tmp_j = adjust_to_borders(min_j, 1);
+        if (!visited[tmp_i][tmp_j] && (boarddata[tmp_i][tmp_j] > 0 || boarddata[tmp_i][tmp_j] == -3) && (g_table[tmp_i][tmp_j] > g_table[min_i][min_j]+1 || g_table[tmp_i][tmp_j] == -1)) // new node && not wall && more optimal
+        {
+            g_table[tmp_i][tmp_j] = g_table[min_i][min_j]+1; // weight distance one from any node to another neighbour
+            prev[tmp_i][tmp_j][0] = min_i;
+            prev[tmp_i][tmp_j][1] = min_j;
+        }
+
+        // left
+        tmp_i = min_i;
+        tmp_j = adjust_to_borders(min_j, -1);
+        if (!visited[tmp_i][tmp_j] && (boarddata[tmp_i][tmp_j] > 0 || boarddata[tmp_i][tmp_j] == -3) && (g_table[tmp_i][tmp_j] > g_table[min_i][min_j]+1 || g_table[tmp_i][tmp_j] == -1)) // new node && not wall && more optimal
+        {
+            g_table[tmp_i][tmp_j] = g_table[min_i][min_j]+1; // weight distance one from any node to another neighbour
+            prev[tmp_i][tmp_j][0] = min_i;
+            prev[tmp_i][tmp_j][1] = min_j;
+        }
+    }
+
+    int tmp_i = y_destination, tmp_j = x_destination;
+    int temp;
+    qDebug() << y_source << " " << x_source;
+    while (!(prev[tmp_i][tmp_j][0] == y_source && prev[tmp_i][tmp_j][1] == x_source))
+    {
+        temp = prev[tmp_i][tmp_j][0];
+        tmp_j = prev[tmp_i][tmp_j][1];
+        tmp_i = temp;
+    }
+
+    boss->x_next = tmp_j;
+    boss->y_next = tmp_i;
+}
+
 void Game::start()
 {
     view->setSceneRect(viewOffset[0], viewOffset[1], 1300, 750);
@@ -277,6 +392,8 @@ void Game::run()
 
     frame++;
     frame %= MAX_FRAME;
+
+    shortestPath();
 
     QList<QGraphicsItem*> items = scene()->items();
 

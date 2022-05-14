@@ -41,9 +41,11 @@ public:
     int Maxhealth;
     direction dir;
 
+    int loc[2];
+
     bool isExplode;
 
-    Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets, int r);
+    Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets, int r, int x_loc=0, int y_loc=0);
     void init();
 
     virtual void updateFrame(long long frame); // virtual to be discussed
