@@ -5,10 +5,11 @@
 #include <QGraphicsRectItem>
 #include <QBrush>
 
-class WinLose_Status : public QGraphicsRectItem
+class WinLose_Status : public QGraphicsPixmapItem
 {
 private:
-    QGraphicsTextItem msg;
+//    QGraphicsTextItem msg;
+    bool win_loss;
 
 public:
     WinLose_Status();
@@ -17,6 +18,7 @@ public:
     void setLoc(float x_pos, float y_pos);
 
     void setMsg(QString m, float centerX, float centerY);
+    void setCondition(bool);
 
     void Show();
     void Hide();

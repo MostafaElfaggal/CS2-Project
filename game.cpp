@@ -371,7 +371,6 @@ void Game::shortestPath()
 
     int tmp_i = y_destination, tmp_j = x_destination;
     int temp;
-    qDebug() << y_source << " " << x_source;
     while (!(prev[tmp_i][tmp_j][0] == y_source && prev[tmp_i][tmp_j][1] == x_source))
     {
         temp = prev[tmp_i][tmp_j][0];
@@ -527,7 +526,9 @@ void Game::Win()
     for (auto i=gitms.begin(); i!=gitms.end(); ++i)
         delete (*i);
 
-    status.setMsg(QString("You Win!"), 1350/2+viewOffset[0], 750/2+viewOffset[1]);
+//    status.setMsg(QString("You Win!"), 1350/2+viewOffset[0], 750/2+viewOffset[1]);
+    status.setCondition(true);
+    status.setLoc(1350/2+viewOffset[0], 750/2+viewOffset[1]);
     status.Show();
 }
 
@@ -571,7 +572,8 @@ void Game::Lose()
     for (auto i=gitms.begin(); i!=gitms.end(); ++i)
         delete (*i);
 
-    status.setMsg(QString("Game Over!"), 1350/2+viewOffset[0], 750/2+viewOffset[1]);
+    status.setCondition(false);
+    status.setLoc(1350/2+viewOffset[0], 750/2+viewOffset[1]);
     status.Show();
 }
 
