@@ -60,6 +60,7 @@ Game::Game(QGraphicsView *v) : QGraphicsRectItem(QRect(0, 0, 1, 1)), pauseButton
 {
     p = new Player(0, 0);
     boss_died = false;
+    purse = 0;
 
     player = new QMediaPlayer;
     audioOutput = new QAudioOutput;
@@ -97,6 +98,7 @@ void Game::init()
     p->init();
     p->setPtrs(&shield_icon);
     connect(p, SIGNAL(die(int)), this, SLOT(Lose()));
+    connect(p, SIGNAL(changePurse(int)), this, SLOT(changePurse(int)));
 //    connect(p, SIGNAL(changeHealth(float)), this, SLOT(playerHealthChanged(float)));
     /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -637,6 +639,11 @@ void Game::handleBossDeath()
 void Game::playerHealthChanged(float h)
 {
     updatePlayerHealth(h);
+}
+
+void Game::changePurse(int x)
+{
+    purse += x;
 }
 
 Game::~Game() {}

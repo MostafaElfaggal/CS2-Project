@@ -35,6 +35,8 @@ signals:
     void callSwitchView(int);
     void changeHealth(float);
 
+    void changePurse(int);
+
 // keyboard control slot
 };
 

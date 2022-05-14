@@ -146,6 +146,8 @@ int Character::checkStep(direction d)
             giptr->effect = false;
             if (giptr->itype == PotHealth)
                 delete giptr;
+            else if (giptr->itype == coin)
+                delete giptr;
             else if (giptr->itype == Shield_Totem)
                 giptr->die();
             break;

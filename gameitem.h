@@ -8,7 +8,8 @@ enum ItemType {
     ThunderStrike,
     FlameWisp,
     Shield_Totem,
-    ShieldForceField
+    ShieldForceField,
+    coin
 };
 
 class GameItem : public GameObject

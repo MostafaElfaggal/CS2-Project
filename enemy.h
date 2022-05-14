@@ -2,6 +2,7 @@
 #define ENEMY_H
 
 #include "character.h"
+#include "coin.h"
 
 class Enemy : public Character
 {

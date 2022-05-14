@@ -10,4 +10,6 @@ void Enemy::updateFrame(long long frame){
 
 Enemy::~Enemy()
 {
+    Coin* c = new Coin(x(), y());
+    scene()->addItem(c);
 }

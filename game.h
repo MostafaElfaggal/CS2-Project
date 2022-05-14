@@ -45,6 +45,8 @@ private:
     Boss* boss;
     int enemysPerRoom[ROOM_COUNT];
 
+    int purse;
+
     QMediaPlayer* player;
     QAudioOutput* audioOutput;
     bool isMusicRunning;
@@ -93,6 +95,7 @@ public slots:
     void decrementEnemy(int);
     void handleBossDeath();
     void playerHealthChanged(float);
+    void changePurse(int);
 
 signals:
     void showPauseMenu(float , float);

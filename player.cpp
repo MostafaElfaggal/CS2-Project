@@ -128,6 +128,8 @@ void Player::updateFrame(long long frame)
         check -= 100;
         if (check==PotHealth)
             increaseHealth(50);
+        else if (check==coin)
+            changePurse(10);
         else if (check==ThunderStrike)
             decreaseHealth(30);
         else if (check==FlameWisp)

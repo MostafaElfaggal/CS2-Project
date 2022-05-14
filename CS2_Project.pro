@@ -16,6 +16,7 @@ SOURCES += \
     bullet.cpp \
     character.cpp \
     clickableimage.cpp \
+    coin.cpp \
     door.cpp \
     enemy.cpp \
     enemy1.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     bullet.h \
     character.h \
     clickableimage.h \
+    coin.h \
     door.h \
     enemy.h \
     enemy1.h \
