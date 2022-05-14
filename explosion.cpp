@@ -11,7 +11,7 @@ Explosion::Explosion(float x_pos, float y_pos) : GameItem(x_pos, y_pos, "Explosi
     }
 }
 
-void Explosion::updateFrame(int frame)
+void Explosion::updateFrame(long long frame)
 {
     if (current_animations == 3)
         delete this;

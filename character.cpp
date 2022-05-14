@@ -41,7 +41,7 @@ void Character::init(){
     Health_bar.setZValue(6);
 }
 
-void Character::updateFrame(int frame)
+void Character::updateFrame(long long frame)
 {
     if (toBeDeleted)
         delete this;
@@ -144,6 +144,8 @@ int Character::checkStep(direction d)
             giptr->effect = false;
             if (giptr->itype == PotHealth)
                 delete giptr;
+            else if (giptr->itype == Shield_Totem)
+                giptr->die();
             break;
         } else if (typeid(*(colliding_Check[i])) == typeid(Door))
         {

@@ -8,7 +8,7 @@ class Thunder : public GameItem
 {
 public:
     Thunder(float x_pos, float y_pos);
-    void updateFrame(int frame);
+    void updateFrame(long long frame);
     ~Thunder();
 };
 

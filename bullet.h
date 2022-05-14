@@ -24,7 +24,7 @@ public:
     Bullet(int x_pos, int y_pos, int p, direction d, bool isPlayer);
     void Move(); // moves speed pixels in the direction dir, after movement checks for collision
     bool checkCollision(); // checks for collision on other objects and returns bool
-    void updateFrame(int frame);
+    void updateFrame(long long frame);
     ~Bullet();
 
 public slots:

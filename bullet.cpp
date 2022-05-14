@@ -116,7 +116,7 @@ bool Bullet::checkCollision()
     return false;
 }
 
-void Bullet::updateFrame(int frame)
+void Bullet::updateFrame(long long frame)
 {
     if (frame%2 == 0) {
         animate();

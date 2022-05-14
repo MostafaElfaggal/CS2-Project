@@ -19,12 +19,15 @@
 
 #include "clickableimage.h"
 #include "bar.h"
+#include "shieldicon.h"
 #include "winlose_status.h"
 
 #include <QTimer>
 
 const int ROOM_COUNT = 4, BOARD_SIZE_W = 23, BOARD_SIZE_H = 23;
 const int offsetX = 75, offsetY = 100;
+
+const long long MAX_FRAME = 1000000;
 
 class Game : public QObject, public QGraphicsRectItem
 {
@@ -45,7 +48,6 @@ private:
     QAudioOutput* audioOutput;
     bool isMusicRunning;
 
-    int frame;
     bool running;
     QTimer* timer;
 
@@ -53,6 +55,7 @@ private:
 
     ClickableImage pauseButton;
     bar HealthBar;
+    ShieldIcon shield_icon;
 
     QGraphicsView* view;
     float viewOffset[2];
@@ -61,6 +64,8 @@ private:
     int room(int x_pos, int y_pos);
 
 public:
+    static int frame;
+
     Game(QGraphicsView* v);
     void init();
     void loadWorld();

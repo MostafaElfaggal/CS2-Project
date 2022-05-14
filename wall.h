@@ -11,7 +11,7 @@ public:
     int value;
 
     Wall(int x_pos, int y_pos, int v);
-    void updateFrame(int frame);
+    void updateFrame(long long frame);
     ~Wall();
 };
 

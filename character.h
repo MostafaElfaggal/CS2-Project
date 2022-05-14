@@ -46,7 +46,7 @@ public:
     Character(int x_pos, int y_pos, int size_w, int size_h, QString img_file, int Health, int Power, int Speed, bool Walkthrough, direction Dir, int maxBullets, int r);
     void init();
 
-    virtual void updateFrame(int frame); // virtual to be discussed
+    virtual void updateFrame(long long frame); // virtual to be discussed
 
     int Health();
     int GetHealth();

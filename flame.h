@@ -10,7 +10,7 @@ private:
     QVector<QPixmap> as[3];
 public:
     Flame(float x_pos, float y_pos);
-    void updateFrame(int frame);
+    void updateFrame(long long frame);
 };
 
 #endif // FLAME_H

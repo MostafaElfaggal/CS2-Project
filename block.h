@@ -7,7 +7,7 @@ class Block : public GameObject
 {
 public:
     Block(int x_pos, int y_pos);
-    void updateFrame(int frame);
+    void updateFrame(long long frame);
 };
 
 #endif // BLOCK_H

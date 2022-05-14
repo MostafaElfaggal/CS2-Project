@@ -18,6 +18,9 @@
 #include "Button.h"
 
 #include "thunder.h"
+#include "shieldtotem.h"
+
+int Game::frame = 0;
 
 int Game::room(int x_pos, int y_pos)
 {
@@ -42,7 +45,7 @@ int Game::room(int x_pos, int y_pos)
     return res;
 }
 
-Game::Game(QGraphicsView *v) : QGraphicsRectItem(QRect(0, 0, 1, 1)), pauseButton(25, 25, "pauseBtn.png", "pauseBtn-hover", "pauseBtn-pressed.png", 50, 50), HealthBar("health_bar", 50, 635)
+Game::Game(QGraphicsView *v) : QGraphicsRectItem(QRect(0, 0, 1, 1)), pauseButton(25, 25, "pauseBtn.png", "pauseBtn-hover", "pauseBtn-pressed.png", 50, 50), HealthBar("health_bar", 50, 635), shield_icon(50+316+50, 650)
 {
     p = new Player(0, 0);
 
@@ -55,8 +58,6 @@ Game::Game(QGraphicsView *v) : QGraphicsRectItem(QRect(0, 0, 1, 1)), pauseButton
     view = v;
     viewOffset[0] = 0;
     viewOffset[1] = 0;
-
-    frame = 0;
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(run()));
@@ -80,6 +81,7 @@ void Game::init()
     p->setLoc(Pstart[0], Pstart[1]);
     scene()->addItem(p);
     p->init();
+    p->setPtrs(&shield_icon);
     connect(p, SIGNAL(die(int)), this, SLOT(Lose()));
 //    connect(p, SIGNAL(changeHealth(float)), this, SLOT(playerHealthChanged(float)));
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -89,8 +91,9 @@ void Game::init()
 
     scene()->addItem(&HealthBar);
     HealthBar.init();
-    HealthBar.setZValue(8);
     connect(p, SIGNAL(changeHealth(float)), &HealthBar, SLOT(updateValue(float)));
+
+    scene()->addItem(&shield_icon);
 
     scene()->addItem(&pauseButton);
     connect(&pauseButton, SIGNAL(press()), this, SLOT(pauseMenu()));
@@ -133,27 +136,44 @@ void Game::loadWorld()
                 Pstart[0] = offsetX + 50 * j;
                 Pstart[1] = offsetY + 50 * i;
             }
-            else if (temp == "e1")
+            else if (temp[0] == 'e')
             { // enemy1
                 boarddata[i][j] = 1;
+                Enemy* tmp;
 
-                Enemy *tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i));
+                if (temp == "eS")
+                {
+                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "Skeleton", 3);
+                } else if (temp == "eU")
+                {
+                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "UndeadKing", 3);
+                } else if (temp == "ef")
+                {
+                    tmp = new Enemy2(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "flying", 4);
+                } else if (temp == "ec")
+                {
+                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "catBoss", 3);
+                } else if (temp == "eB")
+                {
+                    tmp = new Enemy1(offsetX + 50 * j, offsetY + 50 * i, room(j,i), "BlackKnight", 3);
+                }
                 enemysPerRoom[room(j, i)]++;
 
                 scene()->addItem(tmp);
                 tmp->init();
                 connect(tmp, SIGNAL(die(int)), this, SLOT(decrementEnemy(int)));
             }
-            else if (temp == "e2")
-            { // enemy2
-                boarddata[i][j] = 1;
-                Enemy *tmp = new Enemy2(offsetX + 50 * j, offsetY + 50 * i, room(j,i));
-                enemysPerRoom[room(j, i)]++;
+//            else if (temp == "e2")
+//            { // enemy2
+//                boarddata[i][j] = 1;
+//                Enemy *tmp = new Enemy2(offsetX + 50 * j, offsetY + 50 * i, room(j,i));
+//                enemysPerRoom[room(j, i)]++;
 
-                scene()->addItem(tmp);
-                tmp->init();
-                connect(tmp, SIGNAL(die(int)), this, SLOT(decrementEnemy(int)));
-            } else if (temp == "bs")
+//                scene()->addItem(tmp);
+//                tmp->init();
+//                connect(tmp, SIGNAL(die(int)), this, SLOT(decrementEnemy(int)));
+//            }
+            else if (temp == "bs")
             {
                 boarddata[i][j] = 1;
                 boss = new Boss(offsetX + 50 * j, offsetY + 50 * i, room(j,i));
@@ -256,7 +276,7 @@ void Game::run()
         return;
 
     frame++;
-    frame %= 1000;
+    frame %= MAX_FRAME;
 
     QList<QGraphicsItem*> items = scene()->items();
 
@@ -270,8 +290,33 @@ void Game::run()
             itemptr->updateFrame(frame);
     }
 
-    // testing thunder
-    if (frame%300 == 0)
+    // Thunder
+    if (frame%300 == 0) // 10 seconds
+    {
+        QVector<int> i, j;
+        int subI, subJ;
+        for (int _=0; _<3; _++) // 3 bolts at a time
+        {
+            subI = rand()%8+14;
+            subJ = rand()%8+1;
+            while(boarddata[subI][subJ] < 0 || i.indexOf(subI) != -1 || j.indexOf(subJ) != -1) // to ensure no 2 bolts on same row or column
+            {
+                subI = rand()%8+14;
+                subJ = rand()%8+1;
+            }
+
+            i.push_back(subI);
+            j.push_back(subJ);
+            Thunder* t = new Thunder(offsetX + 50 * subJ, offsetY + 50 * subI);
+    //        Thunder* t = new Thunder(offsetX + 50 * 1, offsetY + 50 * 8);
+    //        Thunder* t = new Thunder(125, 175);
+            scene()->addItem(t);
+        }
+    }
+
+    // Shield Totem
+    if (frame%600 == 0) // 20 seconds
+//    if (frame%300 == 0)
     {
         int i, j;
         i = rand()%8+14;
@@ -282,10 +327,10 @@ void Game::run()
             j = rand()%8+1;
         }
 
-        Thunder* t = new Thunder(offsetX + 50 * j, offsetY + 50 * i);
-//        Thunder* t = new Thunder(offsetX + 50 * 1, offsetY + 50 * 8);
-//        Thunder* t = new Thunder(125, 175);
-        scene()->addItem(t);
+        ShieldTotem* st = new ShieldTotem(offsetX + 50 * j, offsetY + 50 * i);
+//        ShieldTotem* st = new ShieldTotem(offsetX + 50 * 1, offsetY + 50 * 8);
+//        ShieldTotem* st = new ShieldTotem(125, 175);
+        scene()->addItem(st);
     }
 
     scene()->update(0,0,1300,2100);
@@ -428,6 +473,7 @@ void Game::switchRoom(int r)
         viewOffset[1] = 600;
         pauseButton.setLoc(viewOffset[0]+25, viewOffset[1]+25);
         HealthBar.setLoc(50, viewOffset[1]+662.5);
+        shield_icon.setLoc(50+316+50, viewOffset[1] + 675);
 
         bg.setPos(viewOffset[0], viewOffset[1]);
     }
@@ -438,6 +484,7 @@ void Game::switchRoom(int r)
         viewOffset[1] = 0;
         pauseButton.setLoc(viewOffset[0]+25, viewOffset[1]+25);
         HealthBar.setLoc(50, 635);
+        shield_icon.setLoc(50+316+50, 650);
 
         bg.setPos(viewOffset[0], viewOffset[1]);
     }

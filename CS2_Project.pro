@@ -33,6 +33,10 @@ SOURCES += \
     pausemenu.cpp \
     player.cpp \
     rectangle.cpp \
+    shield.cpp \
+    shieldicon.cpp \
+    shieldtotem.cpp \
+    skeleton.cpp \
     thunder.cpp \
     wall.cpp \
     winlose_status.cpp
@@ -61,6 +65,10 @@ HEADERS += \
     pausemenu.h \
     player.h \
     rectangle.h \
+    shield.h \
+    shieldicon.h \
+    shieldtotem.h \
+    skeleton.h \
     thunder.h \
     wall.h \
     winlose_status.h

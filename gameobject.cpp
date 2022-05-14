@@ -1,5 +1,7 @@
 #include "gameobject.h"
 
+#include "game.h"
+
 GameObject::GameObject(float x_pos, float y_pos, int size_w, int size_h, QString img_file, QString item)
 {
     prepareGeometryChange();
@@ -29,7 +31,9 @@ void GameObject::animate() {
     current_animations %= animations->size();
 }
 
-void GameObject::updateFrame(int frame) {
+void GameObject::updateFrame(long long frame) {
+    if (timer && (((frame-timerStart)%MAX_FRAME)+MAX_FRAME)%MAX_FRAME == timerDuration)
+        timer = false;
 }
 
 void GameObject::setLoc(float x_pos, float y_pos)
@@ -37,4 +41,11 @@ void GameObject::setLoc(float x_pos, float y_pos)
     prepareGeometryChange();
     setPos(x_pos, y_pos);
     QGraphicsItem::update();
+}
+
+void GameObject::startTimer(long long durationFrames)
+{
+    timerStart = Game::frame;
+    timerDuration = durationFrames;
+    timer = true;
 }

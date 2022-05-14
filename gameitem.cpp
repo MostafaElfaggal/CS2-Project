@@ -7,10 +7,15 @@ GameItem::GameItem(float x_pos, float y_pos, QString img_file) : GameObject(x_po
     setZValue(8);
 }
 
-void GameItem::updateFrame(int frame)
+void GameItem::updateFrame(long long frame)
 {
     if (frame%3 == 0)
         animate();
+}
+
+void GameItem::die()
+{
+
 }
 
 GameItem::~GameItem()

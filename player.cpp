@@ -25,6 +25,14 @@ Player::Player(int x_pos, int y_pos) : Character(x_pos, y_pos, 50, 50, "PlayerE_
     isExplode = false;
 
     isPlayer = true;
+
+    isShieldOn = false;
+    shield = NULL;
+}
+
+void Player::setPtrs(ShieldIcon *si)
+{
+    shield_icon = si;
 }
 
 void Player::keyPressEvent(QKeyEvent *event)
@@ -71,11 +79,24 @@ void Player::keyPressEvent(QKeyEvent *event)
             decreaseHealth(30);
         else if (check==FlameWisp)
             decreaseHealth(5);
+        else if (check==Shield_Totem)
+        {
+            isShieldOn = true;
+            startTimer(210);
+            shield_icon->start();
+        }
     }
     else if (check > 0)
     {
         callSwitchView(check-1);
     }
+}
+
+void Player::Move(direction d)
+{
+    Character::Move(d);
+    if (shield != NULL)
+        shield->setLoc(x(), y());
 }
 
 void Player::increaseHealth(int h)
@@ -86,12 +107,20 @@ void Player::increaseHealth(int h)
 
 void Player::decreaseHealth(int h)
 {
-    changeHealth((health-h)*100/Maxhealth);
-    Character::decreaseHealth(h);
+    if (!isShieldOn)
+    {
+        changeHealth((health-h)*100/Maxhealth);
+        Character::decreaseHealth(h);
+    } else if (shield == NULL)
+    {
+        shield = new Shield(x(), y());
+        shield->setPtrs(&shield);
+        scene()->addItem(shield);
+    }
 }
 
 
-void Player::updateFrame(int frame)
+void Player::updateFrame(long long frame)
 {
     int check = checkStep(NONE);
     if (check >= 100)
@@ -103,6 +132,12 @@ void Player::updateFrame(int frame)
             decreaseHealth(30);
         else if (check==FlameWisp)
             decreaseHealth(5);
+        else if (check==Shield_Totem && !isShieldOn)
+        {
+            isShieldOn = true;
+            startTimer(210);
+            shield_icon->start();
+        }
     }
 
     if (frame % 3 == 0)
@@ -116,11 +151,18 @@ void Player::updateFrame(int frame)
         animate();
     }
 
-    if (frame%150 == 0)
+    if (frame%300 == 0)
         increaseHealth(5);
 
 
     Character::updateFrame(frame);
+    GameObject::updateFrame(frame);
+
+    if(isShieldOn && !timer)
+    {
+        isShieldOn = false;
+//        qDebug() << "end";
+    }
 }
 
 Player::~Player()

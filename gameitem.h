@@ -3,7 +3,13 @@
 
 #include "gameobject.h"
 
-enum ItemType {PotHealth, ThunderStrike, FlameWisp};
+enum ItemType {
+    PotHealth,
+    ThunderStrike,
+    FlameWisp,
+    Shield_Totem,
+    ShieldForceField
+};
 
 class GameItem : public GameObject
 {
@@ -14,7 +20,8 @@ public:
     ItemType itype;
     bool effect;
     GameItem(float x_pos, float y_pos, QString img_file);
-    virtual void updateFrame(int frame);
+    virtual void updateFrame(long long frame);
+    virtual void die();
     ~GameItem();
 };
 

@@ -13,7 +13,7 @@ Thunder::Thunder(float x_pos, float y_pos) : GameItem(x_pos, y_pos, "Thunderstri
     itype = ThunderStrike;
 }
 
-void Thunder::updateFrame(int frame) {
+void Thunder::updateFrame(long long frame) {
     if (frame%3 == 0 && current_animations == 6)
         effect = true;
 

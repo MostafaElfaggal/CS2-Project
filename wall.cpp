@@ -6,7 +6,7 @@ Wall::Wall(int x_pos, int y_pos, int v) : GameObject(x_pos, y_pos, 50, 50, "wall
     setZValue(2);
 }
 
-void Wall::updateFrame(int frame){}
+void Wall::updateFrame(long long frame){}
 
 Wall::~Wall() {
 }

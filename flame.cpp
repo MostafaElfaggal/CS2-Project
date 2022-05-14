@@ -27,7 +27,7 @@ Flame::Flame(float x_pos, float y_pos) : GameItem(x_pos+13, y_pos+18, "FlameStar
     itype = FlameWisp;
 }
 
-void Flame::updateFrame(int frame) {
+void Flame::updateFrame(long long frame) {
     if (frame%12 == 0)
         effect = true;
 
@@ -37,13 +37,13 @@ void Flame::updateFrame(int frame) {
         {
             animations = &as[1];
             current_animations = 0;
-        } else if (current == 11)
+        } else if (current == 27)
         {
             animations = &as[2];
             current_animations = 0;
         }
 
-        if (current == 16)
+        if (current == 32)
             delete this;
         else
         {

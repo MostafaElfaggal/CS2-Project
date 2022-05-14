@@ -16,6 +16,7 @@ bar::bar(QString img_file, float x_pos, float y_pos)
 
 void bar::init()
 {
+    setZValue(8);
     for (int i=0; i<104; i++)
     {
         scene()->addItem(&prog_bar[i]);

@@ -26,7 +26,7 @@ void Door::init()
     scene()->addItem(&bg);
 }
 
-void Door::updateFrame(int frame)
+void Door::updateFrame(long long frame)
 {
     if (open && current < 14)
     {
